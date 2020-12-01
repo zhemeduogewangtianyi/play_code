@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 数据库驱动 -->
+    <classPathEntry    location="mysql-connector-java-5.1.9.jar"/>
+    <context id="DB2Tables"    targetRuntime="MyBatis3">
+        <commentGenerator type="com.opencode.code.mybatis.generator.MysqlCommentGenerator">
+            <property name="author" value="DDDXHH"/>
+            <property name="dateFormat" value="yyyy-MM-dd"/>
+        </commentGenerator>
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://192.168.33.10:3306/dddxhh" userId="dddxhh" password="123456">
+
+            <property name="useInformationSchema" value="true" />
+
+        </jdbcConnection>
+		<!-- 数据库类型与java类型转换 -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!-- 生成Model类存放位置 -->
+        <javaModelGenerator targetPackage="com.itunion.wxshop.model" targetProject="src">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="false"/>
+        </javaModelGenerator>
+        <!-- 生成映射文件存放位置 -->
+        <sqlMapGenerator targetPackage="mapping" targetProject="src">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!-- 生成Dao类存放位置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.itunion.wxshop.mapper" targetProject="src">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+        <!-- 生成对应表及类名 -->
+        <table tableName="ali_xchange_data_reflow" domainObjectName="AliXchangeDataReflow"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+    </context>
+</generatorConfiguration>

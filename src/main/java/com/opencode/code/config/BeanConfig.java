@@ -18,7 +18,7 @@ public class BeanConfig {
     public DataSource dataSource(){
         DriverManagerDataSource druidDataSource = new DriverManagerDataSource();
         druidDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        druidDataSource.setUrl("jdbc:mysql://192.168.3.10:3306/dddxhh");
+        druidDataSource.setUrl("jdbc:mysql://192.168.33.10:3306/dddxhh");
         druidDataSource.setUsername("dddxhh");
         druidDataSource.setPassword("123456");
         return druidDataSource;
