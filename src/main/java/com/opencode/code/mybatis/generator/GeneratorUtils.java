@@ -132,8 +132,10 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
 
     public static void main(String[] args) {
         GeneratorContext gc = new GeneratorContext();
-//            gc.setMysqlJarPath("mysql-connector-java-8.0.21.jar");
+
+//        gc.setMysqlJarPath("mysql-connector-java-8.0.21.jar");
 //        gc.setConnectionUrl("jdbc:mysql://192.168.33.10:3306/dddxhh");
+
         gc.setConnectionUrl("jdbc:mysql://192.168.3.10:3306/dddxhh");
         gc.setDriverClass("com.mysql.cj.jdbc.Driver");
         gc.setUsername("dddxhh");
