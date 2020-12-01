@@ -22,21 +22,9 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
 
     private static final String ARROW = "->";
 
-    public void generator() {
+    public void generator(GeneratorContext gc) {
         List<String> warnings = new ArrayList<>();
         try {
-
-            GeneratorContext gc = new GeneratorContext();
-//            gc.setMysqlJarPath("mysql-connector-java-8.0.21.jar");
-            gc.setConnectionUrl("jdbc:mysql://192.168.33.10:3306/dddxhh");
-            gc.setDriverClass("com.mysql.cj.jdbc.Driver");
-            gc.setUsername("dddxhh");
-            gc.setPassword("123456");
-            gc.setAuthor("DDDXHH");
-            gc.setDaoPackage("com.opencode.code.dao");
-            gc.setEntityPackage("com.opencode.code.entity");
-            gc.setMapperPackage("mapper");
-            gc.setTableNames(new String[] {"ali_xchange_data_reflow -> AliXchangeDataReflowDO"});
 
             Configuration config = configuration(gc);
             //是否覆盖
@@ -142,7 +130,19 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
     }
 
     public static void main(String[] args) {
-        new GeneratorUtils().generator();
+        GeneratorContext gc = new GeneratorContext();
+//            gc.setMysqlJarPath("mysql-connector-java-8.0.21.jar");
+        gc.setConnectionUrl("jdbc:mysql://192.168.33.10:3306/dddxhh");
+        gc.setDriverClass("com.mysql.cj.jdbc.Driver");
+        gc.setUsername("dddxhh");
+        gc.setPassword("123456");
+        gc.setAuthor("DDDXHH");
+        gc.setDaoPackage("com.opencode.code.dao");
+        gc.setEntityPackage("com.opencode.code.entity");
+        gc.setMapperPackage("mapper");
+        gc.setTableNames(new String[] {"ali_xchange_data_reflow -> AliXchangeDataReflowDO"});
+
+        new GeneratorUtils().generator(gc);
     }
 
     @Override
@@ -152,6 +152,6 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        generator();
+//        generator();
     }
 }
