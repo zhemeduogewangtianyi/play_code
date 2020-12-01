@@ -1,6 +1,9 @@
 package com.opencode.code.mybatis.generator;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.opencode.code.mybatis.context.GeneratorContext;
+import org.apache.commons.lang.StringUtils;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.*;
 import org.mybatis.generator.internal.DefaultShellCallback;
@@ -13,14 +16,14 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class GeneratorUtils implements ApplicationContextAware, InitializingBean {
 
     private DataSource dataSource;
-
-    private static final String ARROW = "->";
 
     public void generator(GeneratorContext gc) {
         List<String> warnings = new ArrayList<>();
@@ -88,43 +91,64 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
         javaModelGeneratorConfiguration.addProperty("constructorBased","true");
         context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
 
-        for(String tn : generatorContext.getTableNames()){
-            TableConfiguration tableConfiguration = new TableConfiguration(context);
-
-            tableConfiguration.setInsertStatementEnabled(true);
-            tableConfiguration.setDeleteByPrimaryKeyStatementEnabled(true);
-            tableConfiguration.setSelectByPrimaryKeyStatementEnabled(true);
-            tableConfiguration.setUpdateByPrimaryKeyStatementEnabled(true);
 
 
-            tableConfiguration.setSelectByExampleStatementEnabled(false);
-            tableConfiguration.setCountByExampleStatementEnabled(false);
-            tableConfiguration.setDeleteByExampleStatementEnabled(false);
-            tableConfiguration.setWildcardEscapingEnabled(false);
-            tableConfiguration.setSelectByExampleQueryId("false");
-            tableConfiguration.setUpdateByExampleStatementEnabled(false);
-            tableConfiguration.setAllColumnDelimitingEnabled(false);
-            tableConfiguration.setDelimitIdentifiers(false);
+        TableConfiguration tableConfiguration = new TableConfiguration(context);
 
-            if(!tn.contains(ARROW)){
-                throw new RuntimeException("请检查表名和实体类名称！！遵循 tableName(表名称) -> EntityName(实体类名称) 规范！！");
+        tableConfiguration.setInsertStatementEnabled(true);
+        tableConfiguration.setDeleteByPrimaryKeyStatementEnabled(true);
+        tableConfiguration.setSelectByPrimaryKeyStatementEnabled(true);
+        tableConfiguration.setUpdateByPrimaryKeyStatementEnabled(true);
+
+
+        tableConfiguration.setSelectByExampleStatementEnabled(false);
+        tableConfiguration.setCountByExampleStatementEnabled(false);
+        tableConfiguration.setDeleteByExampleStatementEnabled(false);
+        tableConfiguration.setWildcardEscapingEnabled(false);
+        tableConfiguration.setSelectByExampleQueryId("false");
+        tableConfiguration.setUpdateByExampleStatementEnabled(false);
+        tableConfiguration.setAllColumnDelimitingEnabled(false);
+        tableConfiguration.setDelimitIdentifiers(false);
+
+        String tableName = generatorContext.getTableName();
+        String entityName = generatorContext.getEntityName();
+
+        tableConfiguration.setTableName(tableName);
+        tableConfiguration.setDomainObjectName(entityName);
+
+        context.addTableConfiguration(tableConfiguration);
+
+        String dateFormat = generatorContext.getDateFormat();
+        String author = generatorContext.getAuthor();
+
+
+        String servicePackage = generatorContext.getServicePackage();
+        String serviceImplPackage = generatorContext.getServiceImplPackage();
+        String controllerPackage = generatorContext.getControllerPackage();
+
+        if(StringUtils.isNotBlank(servicePackage) && StringUtils.isNotBlank(serviceImplPackage) && StringUtils.isNotBlank(controllerPackage)){
+            //生成 service & controller
+            PluginConfiguration pluginConfiguration = new PluginConfiguration();
+            pluginConfiguration.setConfigurationType("com.opencode.code.mybatis.generator.OpenCodeServiceAndControllerPlugin");
+            String gcJson = JSON.toJSONString(generatorContext);
+            Map map = JSONObject.parseObject(gcJson, Map.class);
+            for(Iterator car = map.entrySet().iterator() ; car.hasNext() ; ){
+                Map.Entry next = (Map.Entry) car.next();
+                Object key = next.getKey();
+                Object value = next.getValue();
+                pluginConfiguration.addProperty(key.toString(),value.toString());
             }
-
-            String tableName = tn.split(ARROW)[0].trim();
-            String entityName = tn.split(ARROW)[1].trim();
-            tableConfiguration.setTableName(tableName);
-            tableConfiguration.setDomainObjectName(entityName);
-
-            context.addTableConfiguration(tableConfiguration);
-
+            context.addPluginConfiguration(pluginConfiguration);
         }
+
 
         //注释生成
         CommentGeneratorConfiguration commentGeneratorConfiguration = new CommentGeneratorConfiguration();
         commentGeneratorConfiguration.setConfigurationType("com.opencode.code.mybatis.generator.OpenCodeCommentGenerator");
-        commentGeneratorConfiguration.addProperty("dateFormat",generatorContext.getDateFormat());
-        commentGeneratorConfiguration.addProperty("author",generatorContext.getAuthor());
+        commentGeneratorConfiguration.addProperty("dateFormat",dateFormat);
+        commentGeneratorConfiguration.addProperty("author",author);
         context.setCommentGeneratorConfiguration(commentGeneratorConfiguration);
+
 
         cfg.addContext(context);
         return cfg;
@@ -144,7 +168,12 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
         gc.setDaoPackage("com.opencode.code.dao");
         gc.setEntityPackage("com.opencode.code.entity");
         gc.setMapperPackage("mapper");
-        gc.setTableNames(new String[] {"ali_xchange_data_reflow -> AliXchangeDataReflow"});
+        gc.setTableName("ali_xchange_data_reflow");
+        gc.setEntityName("AliXchangeDataReflow");
+
+        gc.setServicePackage("com.opencode.code.mybatis.service");
+        gc.setServiceImplPackage("com.opencode.code.mybatis.service.impl");
+        gc.setControllerPackage("com.opencode.code.mybatis.controller");
 
         new GeneratorUtils().generator(gc);
     }

@@ -52,11 +52,23 @@ public class GeneratorContext {
      */
     private String mapperPackage;
 
+    /** service 存放位置 */
+    private String servicePackage;
+
+    /** serviceImpl 存放位置 */
+    private String serviceImplPackage;
+
+    /** controller 存放位置 */
+    private String ControllerPackage;
+
     /**
-     * 表名称 tableNames
-     *  示例 : String[] tableNames = new String[]{}
-     *  tableNames[0] = "tableName(表名称) -> EntityName(实体类名称)"
+     * 表名称 tableName
      */
-    private String[] tableNames;
+    private String tableName;
+
+    /**
+     * 实体类 name
+     * */
+    private String entityName;
 
 }

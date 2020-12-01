@@ -10,6 +10,7 @@
             <property name="author" value="DDDXHH"/>
             <property name="dateFormat" value="yyyy-MM-dd"/>
         </commentGenerator>
+
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
 			connectionURL="jdbc:mysql://192.168.33.10:3306/dddxhh" userId="dddxhh" password="123456">
 
