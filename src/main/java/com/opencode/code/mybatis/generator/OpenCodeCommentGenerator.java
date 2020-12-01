@@ -13,11 +13,11 @@ import java.util.Properties;
 import java.util.Set;
 
 //CommentGenerator
-public class MysqlCommentGenerator extends DefaultCommentGenerator {
+public class OpenCodeCommentGenerator extends DefaultCommentGenerator {
 
     private Properties properties ;
 
-    public MysqlCommentGenerator() {
+    public OpenCodeCommentGenerator() {
         this.properties = new Properties();
     }
 

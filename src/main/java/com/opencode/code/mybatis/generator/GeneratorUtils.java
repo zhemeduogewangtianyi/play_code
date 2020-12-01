@@ -48,7 +48,8 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
 
         context.setId("default");
 
-        context.setTargetRuntime("MyBatis3");
+//        context.setTargetRuntime("MyBatis3");
+        context.setTargetRuntime("com.opencode.code.mybatis.generator.OpenCodeIntrospectedTable");
 
         JDBCConnectionConfiguration jdbcConnectionConfiguration = new JDBCConnectionConfiguration();
         jdbcConnectionConfiguration.setConnectionURL(generatorContext.getConnectionUrl());
@@ -120,7 +121,7 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
 
         //注释生成
         CommentGeneratorConfiguration commentGeneratorConfiguration = new CommentGeneratorConfiguration();
-        commentGeneratorConfiguration.setConfigurationType("com.opencode.code.mybatis.generator.MysqlCommentGenerator");
+        commentGeneratorConfiguration.setConfigurationType("com.opencode.code.mybatis.generator.OpenCodeCommentGenerator");
         commentGeneratorConfiguration.addProperty("dateFormat",generatorContext.getDateFormat());
         commentGeneratorConfiguration.addProperty("author",generatorContext.getAuthor());
         context.setCommentGeneratorConfiguration(commentGeneratorConfiguration);
@@ -132,7 +133,8 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
     public static void main(String[] args) {
         GeneratorContext gc = new GeneratorContext();
 //            gc.setMysqlJarPath("mysql-connector-java-8.0.21.jar");
-        gc.setConnectionUrl("jdbc:mysql://192.168.33.10:3306/dddxhh");
+//        gc.setConnectionUrl("jdbc:mysql://192.168.33.10:3306/dddxhh");
+        gc.setConnectionUrl("jdbc:mysql://192.168.3.10:3306/dddxhh");
         gc.setDriverClass("com.mysql.cj.jdbc.Driver");
         gc.setUsername("dddxhh");
         gc.setPassword("123456");
@@ -140,7 +142,7 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
         gc.setDaoPackage("com.opencode.code.dao");
         gc.setEntityPackage("com.opencode.code.entity");
         gc.setMapperPackage("mapper");
-        gc.setTableNames(new String[] {"ali_xchange_data_reflow -> AliXchangeDataReflowDO"});
+        gc.setTableNames(new String[] {"ali_xchange_data_reflow -> AliXchangeDataReflow"});
 
         new GeneratorUtils().generator(gc);
     }

@@ -5,8 +5,8 @@
 <generatorConfiguration>
     <!-- 数据库驱动 -->
     <classPathEntry    location="mysql-connector-java-5.1.9.jar"/>
-    <context id="DB2Tables"    targetRuntime="MyBatis3">
-        <commentGenerator type="com.opencode.code.mybatis.generator.MysqlCommentGenerator">
+    <context id="DB2Tables"  targetRuntime="MyBatis3">
+        <commentGenerator type="com.opencode.code.mybatis.generator.OpenCodeCommentGenerator">
             <property name="author" value="DDDXHH"/>
             <property name="dateFormat" value="yyyy-MM-dd"/>
         </commentGenerator>
