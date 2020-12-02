@@ -127,7 +127,7 @@ public class ServiceImplTemplate extends BaseTemplate {
         method.addParameter(parameter);
 
         method.addBodyLine(super.doName + " " + firstCharToLowCase(super.doName) + " = " + mapperServiceName + ".selectByPrimaryKey(id);");
-        method.addBodyLine("return JSONObject.parseObject(JSON.toJSONString(" + firstCharToLowCase(super.doName) + "),"+ super.doName +".class);");
+        method.addBodyLine("return JSONObject.parseObject(JSON.toJSONString(" + firstCharToLowCase(super.doName) + "),"+ super.voName +".class);");
         method.setReturnType(new FullyQualifiedJavaType(super.voName));
         method.setVisibility(JavaVisibility.PUBLIC);
 
