@@ -9,6 +9,7 @@ public class Main {
 
         GeneratorContext gc = new GeneratorContext();
 
+        //custom jar
 //        gc.setMysqlJarPath("mysql-connector-java-8.0.21.jar");
 //        gc.setConnectionUrl("jdbc:mysql://192.168.3.10:3306/dddxhh");
 
