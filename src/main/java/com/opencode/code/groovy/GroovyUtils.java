@@ -5,7 +5,7 @@ import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
 
 /**
- * groovy 动态执行
+ * groovy runtime
  * */
 public class GroovyUtils {
 
@@ -29,7 +29,7 @@ public class GroovyUtils {
                 "    }\n" +
                 "\n" +
                 "}";
-        Object[] arg = {"低调的小黑孩","18"};
+        Object[] arg = {"dddxhh","18"};
         Object solution = GroovyUtils.evalScript(script, "solution", arg);
         System.out.println(solution);
 

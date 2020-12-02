@@ -2,6 +2,8 @@ package com.opencode.code.mybatis.context;
 
 import lombok.Data;
 
+import java.io.File;
+
 /**
  * 生成器
  */
@@ -91,5 +93,15 @@ public class GeneratorContext {
      * 指定 数据库表 的主键字段
      */
     private String primaryKey;
+
+    /**
+     * 目标项目地址 DO VO Param Dao Service ServiceImpl Controller 的位置
+     * */
+    private String targetProject = "src" + File.separator + "main" + File.separator + "java";
+
+    /**
+     * 目标资源地址 .xml 的位置
+     * */
+    private String targetResources = "src" + File.separator + "main" + File.separator + "resources";
 
 }

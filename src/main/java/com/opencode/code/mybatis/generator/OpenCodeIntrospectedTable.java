@@ -20,6 +20,7 @@ public class OpenCodeIntrospectedTable extends IntrospectedTableMyBatis3Impl {
         return sb.toString();
     }
 
+    //update DO file name
     protected void calculateModelAttributes() {
         String pakkage = calculateJavaModelPackage();
 

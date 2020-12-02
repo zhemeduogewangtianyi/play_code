@@ -7,17 +7,16 @@ import org.apache.commons.lang.StringUtils;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.*;
 import org.mybatis.generator.internal.DefaultShellCallback;
-import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@Component
+
 public class GeneratorUtils {
 
+    //generator
     public void generator(GeneratorContext gc) {
         List<String> warnings = new ArrayList<>();
         try {
@@ -32,6 +31,7 @@ public class GeneratorUtils {
         }
     }
 
+    //Configuration
     private Configuration configuration(GeneratorContext generatorContext) {
 
         Configuration cfg = new Configuration();
@@ -41,12 +41,12 @@ public class GeneratorUtils {
             cfg.addClasspathEntry(mysqlJarPath);
         }
 
-        //禁止 WithBLOBS 文件，平铺到一个类里
+        //disable WithBLOBS file，flat in to java class
         Context context = new Context(ModelType.FLAT);
 
         context.setId("default");
 
-//        context.setTargetRuntime("MyBatis3");
+        //sourceCode default is MyBatis3
         context.setTargetRuntime("com.opencode.code.mybatis.generator.OpenCodeIntrospectedTable");
 
         JDBCConnectionConfiguration jdbcConnectionConfiguration = new JDBCConnectionConfiguration();
@@ -61,24 +61,28 @@ public class GeneratorUtils {
         javaTypeResolverConfiguration.addProperty("forceBigDecimals","false");
         context.setJavaTypeResolverConfiguration(javaTypeResolverConfiguration);
 
+        String targetResources = generatorContext.getTargetResources();
+        String targetProject = generatorContext.getTargetProject();
+
         JavaClientGeneratorConfiguration javaClientGeneratorConfiguration = new JavaClientGeneratorConfiguration();
-        //TODO 自动获取项目根路径 - dao
-        javaClientGeneratorConfiguration.setTargetProject("src" + File.separator + "main" + File.separator + "java");
+
+        //file path - dao
+        javaClientGeneratorConfiguration.setTargetProject(targetProject);
         javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
         javaClientGeneratorConfiguration.setTargetPackage(generatorContext.getDaoPackage());
         javaClientGeneratorConfiguration.addProperty("enableSubPackages","false");
         context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
 
-        //TODO 自动获取项目根路径 - mapper
+        //file path - mapper
         SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration = new SqlMapGeneratorConfiguration();
-        sqlMapGeneratorConfiguration.setTargetProject("src" + File.separator + "main" + File.separator + "resources");
+        sqlMapGeneratorConfiguration.setTargetProject(targetResources);
         sqlMapGeneratorConfiguration.setTargetPackage(generatorContext.getMapperPackage());
         sqlMapGeneratorConfiguration.addProperty("enableSubPackages","false");
         context.setSqlMapGeneratorConfiguration(sqlMapGeneratorConfiguration);
 
-        //TODO 自动获取项目根路径 - entity
+        //file path - entity
         JavaModelGeneratorConfiguration javaModelGeneratorConfiguration = new JavaModelGeneratorConfiguration();
-        javaModelGeneratorConfiguration.setTargetProject("src" + File.separator + "main" + File.separator + "java");
+        javaModelGeneratorConfiguration.setTargetProject(targetProject);
         javaModelGeneratorConfiguration.setTargetPackage(generatorContext.getDoPackage());
         javaModelGeneratorConfiguration.addProperty("immutable","false");
         javaModelGeneratorConfiguration.addProperty("enableSubPackages","false");
@@ -87,6 +91,7 @@ public class GeneratorUtils {
         context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
 
 
+        //data table configuration
         TableConfiguration tableConfiguration = new TableConfiguration(context);
 
         tableConfiguration.setInsertStatementEnabled(true);
@@ -94,10 +99,9 @@ public class GeneratorUtils {
         tableConfiguration.setSelectByPrimaryKeyStatementEnabled(true);
         tableConfiguration.setUpdateByPrimaryKeyStatementEnabled(true);
 
-
+        //primaryKey return to insert Object
         GeneratedKey generatedKey = new GeneratedKey(generatorContext.getPrimaryKey(),"JDBC",true,"post");
         tableConfiguration.setGeneratedKey(generatedKey);
-
 
         tableConfiguration.setSelectByExampleStatementEnabled(false);
         tableConfiguration.setCountByExampleStatementEnabled(false);
@@ -108,6 +112,7 @@ public class GeneratorUtils {
         tableConfiguration.setAllColumnDelimitingEnabled(false);
         tableConfiguration.setDelimitIdentifiers(false);
 
+        // name configuration
         String tableName = generatorContext.getTableName();
         String entityName = generatorContext.getEntityName();
 
@@ -116,16 +121,17 @@ public class GeneratorUtils {
 
         context.addTableConfiguration(tableConfiguration);
 
+        //comment variable
         String dateFormat = generatorContext.getDateFormat();
         String author = generatorContext.getAuthor();
 
-
+        //extern generator service & serviceImpl & controller & ViewObject & ParamObject
         String servicePackage = generatorContext.getServicePackage();
         String serviceImplPackage = generatorContext.getServiceImplPackage();
         String controllerPackage = generatorContext.getControllerPackage();
 
         if(StringUtils.isNotBlank(servicePackage) && StringUtils.isNotBlank(serviceImplPackage) && StringUtils.isNotBlank(controllerPackage)){
-            //生成 service & controller
+            //generator
             PluginConfiguration pluginConfiguration = new PluginConfiguration();
             pluginConfiguration.setConfigurationType("com.opencode.code.mybatis.generator.OpenCodeServiceAndControllerPlugin");
             String gcJson = JSON.toJSONString(generatorContext);
@@ -139,7 +145,7 @@ public class GeneratorUtils {
             context.addPluginConfiguration(pluginConfiguration);
         }
 
-        //注释生成
+        //generator comment settings
         CommentGeneratorConfiguration commentGeneratorConfiguration = new CommentGeneratorConfiguration();
         commentGeneratorConfiguration.setConfigurationType("com.opencode.code.mybatis.generator.OpenCodeCommentGenerator");
         commentGeneratorConfiguration.addProperty("dateFormat",dateFormat);
@@ -156,27 +162,33 @@ public class GeneratorUtils {
 //        gc.setMysqlJarPath("mysql-connector-java-8.0.21.jar");
 //        gc.setConnectionUrl("jdbc:mysql://192.168.3.10:3306/dddxhh");
 
-        //jdbc 数据库连接
+        //jdbc databases Configuration
         gc.setConnectionUrl("jdbc:mysql://192.168.33.10:3306/dddxhh");
         gc.setDriverClass("com.mysql.cj.jdbc.Driver");
         gc.setUsername("dddxhh");
         gc.setPassword("123456");
         gc.setAuthor("DDDXHH");
 
-        gc.setDoPackage("com.opencode.code.entity");
-        gc.setDaoPackage("com.opencode.code.dao");
-        gc.setMapperPackage("mapper");
+        //name settings
         gc.setTableName("ali_xchange_data_reflow");
         gc.setEntityName("AliXchangeDataReflow");
 
+        //base mapper package path
+        gc.setDoPackage("com.opencode.code.entity");
+        gc.setDaoPackage("com.opencode.code.dao");
+        gc.setMapperPackage("mapper");
+
+        //extern service & serviceImpl & controller & ViewObject & ParamObject path
         gc.setServicePackage("com.opencode.code.mybatis.service");
         gc.setServiceImplPackage("com.opencode.code.mybatis.service.impl");
         gc.setControllerPackage("com.opencode.code.mybatis.controller");
         gc.setParamPackage("com.opencode.code.entity.param");
         gc.setVoPackage("com.opencode.code.entity.vo");
 
+        //primaryKey
         gc.setPrimaryKey("id");
 
+        //run
         new GeneratorUtils().generator(gc);
     }
 

@@ -1,6 +1,5 @@
 package com.opencode.code.mybatis.generator;
 
-import org.mybatis.generator.api.CommentGenerator;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.*;
@@ -15,7 +14,7 @@ import java.util.Set;
 //CommentGenerator
 public class OpenCodeCommentGenerator extends DefaultCommentGenerator {
 
-    private Properties properties ;
+    private final Properties properties ;
 
     public OpenCodeCommentGenerator() {
         this.properties = new Properties();
@@ -28,7 +27,7 @@ public class OpenCodeCommentGenerator extends DefaultCommentGenerator {
 
     @Override
     public void addFieldComment(Field field, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
-        // 获取列注释
+        //get column remarks
         String remarks = introspectedColumn.getRemarks();
         field.addJavaDocLine("/**");
         field.addJavaDocLine(" * " + remarks);
@@ -42,11 +41,12 @@ public class OpenCodeCommentGenerator extends DefaultCommentGenerator {
 
     @Override
     public void addModelClassComment(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+
         String author = properties.getProperty("author");
         String dateFormat = properties.getProperty("dateFormat", "yyyy-MM-dd");
         SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
 
-        // 获取表注释
+        // get table remark
         String remarks = introspectedTable.getRemarks();
 
         topLevelClass.addJavaDocLine("/**");
