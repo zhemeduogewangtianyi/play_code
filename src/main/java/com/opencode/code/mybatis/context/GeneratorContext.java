@@ -40,9 +40,19 @@ public class GeneratorContext {
     private String password;
 
     /**
-     * 实体类存放位置
+     * DO 实体类存放位置
      */
-    private String entityPackage;
+    private String doPackage;
+
+    /**
+     * param 实体类存放位置
+     */
+    private String paramPackage;
+
+    /**
+     * VO 实体类存放位置
+     */
+    private String voPackage;
     /**
      * dao 接口存放位置
      */
@@ -52,13 +62,19 @@ public class GeneratorContext {
      */
     private String mapperPackage;
 
-    /** service 存放位置 */
+    /**
+     * service 存放位置
+     */
     private String servicePackage;
 
-    /** serviceImpl 存放位置 */
+    /**
+     * serviceImpl 存放位置
+     */
     private String serviceImplPackage;
 
-    /** controller 存放位置 */
+    /**
+     * controller 存放位置
+     */
     private String ControllerPackage;
 
     /**
@@ -68,7 +84,17 @@ public class GeneratorContext {
 
     /**
      * 实体类 name
-     * */
+     */
     private String entityName;
+
+    /**
+     * 指定 数据库表 的主键字段
+     */
+    private String primaryKey;
+
+    /**
+     * 指定 实体类 的主键字段
+     */
+    private String objPrimaryKey;
 
 }

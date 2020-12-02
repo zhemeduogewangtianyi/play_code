@@ -7,13 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.*;
 import org.mybatis.generator.internal.DefaultShellCallback;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,9 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class GeneratorUtils implements ApplicationContextAware, InitializingBean {
-
-    private DataSource dataSource;
+public class GeneratorUtils {
 
     public void generator(GeneratorContext gc) {
         List<String> warnings = new ArrayList<>();
@@ -40,6 +33,7 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
     }
 
     private Configuration configuration(GeneratorContext generatorContext) {
+
         Configuration cfg = new Configuration();
 
         String mysqlJarPath = generatorContext.getMysqlJarPath();
@@ -47,7 +41,8 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
             cfg.addClasspathEntry(mysqlJarPath);
         }
 
-        Context context = new Context(null);
+        //禁止 WithBLOBS 文件，平铺到一个类里
+        Context context = new Context(ModelType.FLAT);
 
         context.setId("default");
 
@@ -84,13 +79,12 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
         //TODO 自动获取项目根路径 - entity
         JavaModelGeneratorConfiguration javaModelGeneratorConfiguration = new JavaModelGeneratorConfiguration();
         javaModelGeneratorConfiguration.setTargetProject("src" + File.separator + "main" + File.separator + "java");
-        javaModelGeneratorConfiguration.setTargetPackage(generatorContext.getEntityPackage());
+        javaModelGeneratorConfiguration.setTargetPackage(generatorContext.getDoPackage());
         javaModelGeneratorConfiguration.addProperty("immutable","false");
         javaModelGeneratorConfiguration.addProperty("enableSubPackages","false");
         javaModelGeneratorConfiguration.addProperty("trimStrings","true");
         javaModelGeneratorConfiguration.addProperty("constructorBased","true");
         context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
-
 
 
         TableConfiguration tableConfiguration = new TableConfiguration(context);
@@ -99,6 +93,10 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
         tableConfiguration.setDeleteByPrimaryKeyStatementEnabled(true);
         tableConfiguration.setSelectByPrimaryKeyStatementEnabled(true);
         tableConfiguration.setUpdateByPrimaryKeyStatementEnabled(true);
+
+
+        GeneratedKey generatedKey = new GeneratedKey(generatorContext.getPrimaryKey(),"JDBC",true,"post");
+        tableConfiguration.setGeneratedKey(generatedKey);
 
 
         tableConfiguration.setSelectByExampleStatementEnabled(false);
@@ -141,14 +139,12 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
             context.addPluginConfiguration(pluginConfiguration);
         }
 
-
         //注释生成
         CommentGeneratorConfiguration commentGeneratorConfiguration = new CommentGeneratorConfiguration();
         commentGeneratorConfiguration.setConfigurationType("com.opencode.code.mybatis.generator.OpenCodeCommentGenerator");
         commentGeneratorConfiguration.addProperty("dateFormat",dateFormat);
         commentGeneratorConfiguration.addProperty("author",author);
         context.setCommentGeneratorConfiguration(commentGeneratorConfiguration);
-
 
         cfg.addContext(context);
         return cfg;
@@ -158,15 +154,17 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
         GeneratorContext gc = new GeneratorContext();
 
 //        gc.setMysqlJarPath("mysql-connector-java-8.0.21.jar");
-//        gc.setConnectionUrl("jdbc:mysql://192.168.33.10:3306/dddxhh");
+//        gc.setConnectionUrl("jdbc:mysql://192.168.3.10:3306/dddxhh");
 
-        gc.setConnectionUrl("jdbc:mysql://192.168.3.10:3306/dddxhh");
+        //jdbc 数据库连接
+        gc.setConnectionUrl("jdbc:mysql://192.168.33.10:3306/dddxhh");
         gc.setDriverClass("com.mysql.cj.jdbc.Driver");
         gc.setUsername("dddxhh");
         gc.setPassword("123456");
         gc.setAuthor("DDDXHH");
+
+        gc.setDoPackage("com.opencode.code.entity");
         gc.setDaoPackage("com.opencode.code.dao");
-        gc.setEntityPackage("com.opencode.code.entity");
         gc.setMapperPackage("mapper");
         gc.setTableName("ali_xchange_data_reflow");
         gc.setEntityName("AliXchangeDataReflow");
@@ -174,17 +172,13 @@ public class GeneratorUtils implements ApplicationContextAware, InitializingBean
         gc.setServicePackage("com.opencode.code.mybatis.service");
         gc.setServiceImplPackage("com.opencode.code.mybatis.service.impl");
         gc.setControllerPackage("com.opencode.code.mybatis.controller");
+        gc.setParamPackage("com.opencode.code.entity.param");
+        gc.setVoPackage("com.opencode.code.entity.vo");
+
+        gc.setPrimaryKey("id");
+        gc.setObjPrimaryKey("id");
 
         new GeneratorUtils().generator(gc);
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.dataSource = applicationContext.getAutowireCapableBeanFactory().getBean(DataSource.class);
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-//        generator();
-    }
 }

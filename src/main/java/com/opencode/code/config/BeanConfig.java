@@ -1,7 +1,9 @@
 package com.opencode.code.config;
 
 import org.apache.ibatis.logging.nologging.NoLoggingImpl;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -12,21 +14,22 @@ import javax.sql.DataSource;
 import java.io.IOException;
 
 @Configuration
+@MapperScan(basePackages = "com.opencode.code.dao", sqlSessionFactoryRef = "sqlSessionFactoryBean")
 public class BeanConfig {
 
     @Bean
     public DataSource dataSource(){
         DriverManagerDataSource druidDataSource = new DriverManagerDataSource();
         druidDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-//        druidDataSource.setUrl("jdbc:mysql://192.168.33.10:3306/dddxhh");
-        druidDataSource.setUrl("jdbc:mysql://192.168.3.10:3306/dddxhh");
+        druidDataSource.setUrl("jdbc:mysql://192.168.33.10:3306/dddxhh");
+//        druidDataSource.setUrl("jdbc:mysql://192.168.3.10:3306/dddxhh");
         druidDataSource.setUsername("dddxhh");
         druidDataSource.setPassword("123456");
         return druidDataSource;
     }
 
     @Bean
-    public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) throws IOException {
+    public SqlSessionFactory sqlSessionFactoryBean(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
 
@@ -45,7 +48,9 @@ public class BeanConfig {
         // 设置mapper文件扫描路径
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:mapper/*.xml"));
 
-        return sqlSessionFactoryBean;
+        sqlSessionFactoryBean.setTypeAliasesPackage("com.opencode.code.entity");
+
+        return sqlSessionFactoryBean.getObject();
     }
 
 }
