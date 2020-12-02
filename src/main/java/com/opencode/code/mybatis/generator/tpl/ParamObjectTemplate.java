@@ -20,17 +20,17 @@ public class ParamObjectTemplate extends BaseTemplate {
 
     public GeneratedJavaFile generateParamObject(IntrospectedTable introspectedTable) {
 
-        FullyQualifiedJavaType dataObject = new FullyQualifiedJavaType(this.doFullName);
+        FullyQualifiedJavaType dataObject = new FullyQualifiedJavaType(super.doFullName);
 
-        FullyQualifiedJavaType param = new FullyQualifiedJavaType(this.paramFullName);
+        FullyQualifiedJavaType param = new FullyQualifiedJavaType(super.paramFullName);
 
         TopLevelClass clazz = new TopLevelClass(param);
 
         //注释
-        addDoc(this.paramName,clazz);
+        addDoc(super.paramName,clazz);
 
         clazz.addImportedTypes(new HashSet<>(Collections.singletonList(
-                new FullyQualifiedJavaType(this.doName)
+                new FullyQualifiedJavaType(super.doFullName)
         )));
 
         clazz.setSuperClass(dataObject);
