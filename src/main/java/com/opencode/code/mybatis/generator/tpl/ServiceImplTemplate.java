@@ -2,7 +2,6 @@ package com.opencode.code.mybatis.generator.tpl;
 
 import com.opencode.code.mybatis.context.GeneratorContext;
 import org.mybatis.generator.api.GeneratedJavaFile;
-import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.config.Context;
 
@@ -25,7 +24,7 @@ public class ServiceImplTemplate extends BaseTemplate {
         TopLevelClass clazz = new TopLevelClass(serviceImpl);
 
         //注释
-        addDoc(this.serviceImplName,clazz);
+        addDoc(this.serviceImplName,clazz,true);
 
         clazz.addSuperInterface(service);
 

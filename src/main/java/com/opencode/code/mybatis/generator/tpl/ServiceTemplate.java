@@ -2,7 +2,6 @@ package com.opencode.code.mybatis.generator.tpl;
 
 import com.opencode.code.mybatis.context.GeneratorContext;
 import org.mybatis.generator.api.GeneratedJavaFile;
-import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.config.Context;
 
@@ -24,7 +23,7 @@ public class ServiceTemplate extends BaseTemplate{
         Interface serviceInterface = new Interface(service);
 
         //注释
-        addDoc(super.serviceName,serviceInterface);
+        addDoc(super.serviceName,serviceInterface,true);
 
         serviceInterface.addImportedTypes(new HashSet<>(Arrays.asList(
                 new FullyQualifiedJavaType(super.voFullName),
@@ -45,7 +44,7 @@ public class ServiceTemplate extends BaseTemplate{
 
         Method method = new Method("save");
 
-        addDoc("save",method);
+        addDoc("save",method,true);
 
         Parameter parameter = new Parameter(new FullyQualifiedJavaType(super.paramName),"param");
         method.addParameter(parameter);
@@ -60,7 +59,7 @@ public class ServiceTemplate extends BaseTemplate{
 
         Method method = new Method("delete");
 
-        addDoc("delete",method);
+        addDoc("delete",method,true);
 
         Parameter parameter = new Parameter(new FullyQualifiedJavaType("java.lang.Long"),"id");
         method.addParameter(parameter);
@@ -75,7 +74,7 @@ public class ServiceTemplate extends BaseTemplate{
 
         Method method = new Method("update");
 
-        addDoc("update",method);
+        addDoc("update",method,true);
 
         Parameter parameter = new Parameter(new FullyQualifiedJavaType(super.paramName),"param");
         method.addParameter(parameter);
@@ -90,7 +89,7 @@ public class ServiceTemplate extends BaseTemplate{
 
         Method method = new Method("queryById");
 
-        addDoc("queryById",method);
+        addDoc("queryById",method,true);
 
         Parameter parameter = new Parameter(new FullyQualifiedJavaType("java.lang.Long"),"id");
         method.addParameter(parameter);

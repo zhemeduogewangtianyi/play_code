@@ -1,11 +1,16 @@
 package com.opencode.code.mybatis.generator.tpl;
 
 import com.opencode.code.mybatis.context.GeneratorContext;
-import org.mybatis.generator.api.dom.java.JavaElement;
+import org.apache.commons.collections.CollectionUtils;
+import org.mybatis.generator.api.IntrospectedColumn;
+import org.mybatis.generator.api.IntrospectedTable;
+import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.config.Context;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class BaseTemplate {
 
@@ -71,12 +76,15 @@ public class BaseTemplate {
 
     }
 
-    protected void addDoc(String doc, JavaElement clazz){
+    protected void addDoc(String doc, JavaElement clazz,boolean needInfo){
         clazz.addJavaDocLine("/**");
         clazz.addJavaDocLine(" * " + doc);
-        clazz.addJavaDocLine(" *");
-        clazz.addJavaDocLine(" * @author " + generatorContext.getAuthor());
-        clazz.addJavaDocLine(" * @date " + new SimpleDateFormat(generatorContext.getDateFormat()).format(new Date()));
+        if(needInfo){
+            clazz.addJavaDocLine(" *");
+            clazz.addJavaDocLine(" * @author " + generatorContext.getAuthor());
+            clazz.addJavaDocLine(" * @date " + new SimpleDateFormat(generatorContext.getDateFormat()).format(new Date()));
+        }
+
         clazz.addJavaDocLine(" */");
     }
 
@@ -100,6 +108,39 @@ public class BaseTemplate {
             return str.replaceFirst(temp,temp.toUpperCase());
         }
         return str;
+    }
+
+    protected void objectGenerator(InnerClass clazz, IntrospectedTable introspectedTable){
+
+        List<IntrospectedColumn> columns = new ArrayList<>();
+        List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
+        List<IntrospectedColumn> baseColumns = introspectedTable.getBaseColumns();
+        List<IntrospectedColumn> blobColumns = introspectedTable.getBLOBColumns();
+
+        if(!CollectionUtils.isEmpty(primaryKeyColumns)){
+            columns.addAll(primaryKeyColumns);
+        }
+
+        if(!CollectionUtils.isEmpty(baseColumns)){
+            columns.addAll(baseColumns);
+        }
+
+        if(!CollectionUtils.isEmpty(blobColumns)){
+            columns.addAll(blobColumns);
+        }
+
+        for(IntrospectedColumn isc : columns){
+
+            String remarks = isc.getRemarks();
+            String javaProperty = isc.getJavaProperty();
+            FullyQualifiedJavaType fullyQualifiedJavaType = isc.getFullyQualifiedJavaType();
+            Field field = new Field(javaProperty,fullyQualifiedJavaType);
+            field.setVisibility(JavaVisibility.PRIVATE);
+
+            addDoc(remarks,field,false);
+
+            clazz.addField(field);
+        }
     }
 
 }

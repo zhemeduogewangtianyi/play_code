@@ -18,22 +18,22 @@ public class ViewObjectTemplate extends BaseTemplate {
         super(generatorContext, context);
     }
 
-    public GeneratedJavaFile generateViewObject() {
-
-        FullyQualifiedJavaType dataObject = new FullyQualifiedJavaType(super.doFullName);
+    public GeneratedJavaFile generateViewObject(IntrospectedTable introspectedTable) {
 
         FullyQualifiedJavaType vo = new FullyQualifiedJavaType(this.voFullName);
 
         TopLevelClass clazz = new TopLevelClass(vo);
 
         //注释
-        addDoc(this.voName,clazz);
+        addDoc(this.voName,clazz,true);
 
         clazz.addImportedTypes(new HashSet<>(Collections.singletonList(
-                new FullyQualifiedJavaType(this.doFullName)
+                new FullyQualifiedJavaType("lombok.Data")
         )));
 
-        clazz.setSuperClass(dataObject);
+        clazz.addAnnotation("@Data");
+
+        super.objectGenerator(clazz,introspectedTable);
 
         clazz.setVisibility(JavaVisibility.PUBLIC);
 

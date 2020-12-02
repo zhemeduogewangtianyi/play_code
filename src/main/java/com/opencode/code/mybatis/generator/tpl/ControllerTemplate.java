@@ -24,7 +24,7 @@ public class ControllerTemplate extends BaseTemplate {
         TopLevelClass clazz = new TopLevelClass(controller);
 
         //注释
-        addDoc(super.controllerName,clazz);
+        addDoc(super.controllerName,clazz,true);
 
         //描述类的作用域修饰符
         clazz.setVisibility(JavaVisibility.PUBLIC);
