@@ -92,9 +92,4 @@ public class GeneratorContext {
      */
     private String primaryKey;
 
-    /**
-     * 指定 实体类 的主键字段
-     */
-    private String objPrimaryKey;
-
 }

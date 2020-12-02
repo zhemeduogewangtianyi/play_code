@@ -2,6 +2,7 @@ package com.opencode.code.mybatis.generator.tpl;
 
 import com.opencode.code.mybatis.context.GeneratorContext;
 import org.mybatis.generator.api.GeneratedJavaFile;
+import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.config.Context;
 
@@ -11,8 +12,9 @@ import java.util.HashSet;
 
 public class ServiceTemplate extends BaseTemplate{
 
-    public ServiceTemplate(GeneratorContext generatorContext, Context context) {
-        super(generatorContext, context);
+
+    public ServiceTemplate(GeneratorContext generatorContext, Context context, IntrospectedTable introspectedTable) {
+        super(generatorContext, context, introspectedTable);
     }
 
     //生成 service 类

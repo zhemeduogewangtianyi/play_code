@@ -176,7 +176,6 @@ public class GeneratorUtils {
         gc.setVoPackage("com.opencode.code.entity.vo");
 
         gc.setPrimaryKey("id");
-        gc.setObjPrimaryKey("id");
 
         new GeneratorUtils().generator(gc);
     }

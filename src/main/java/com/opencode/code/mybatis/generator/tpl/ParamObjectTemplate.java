@@ -14,11 +14,12 @@ import java.util.HashSet;
 
 public class ParamObjectTemplate extends BaseTemplate {
 
-    public ParamObjectTemplate(GeneratorContext generatorContext, Context context) {
-        super(generatorContext, context);
+
+    public ParamObjectTemplate(GeneratorContext generatorContext, Context context, IntrospectedTable introspectedTable) {
+        super(generatorContext, context, introspectedTable);
     }
 
-    public GeneratedJavaFile generateParamObject(IntrospectedTable introspectedTable) {
+    public GeneratedJavaFile generateParamObject() {
 
         FullyQualifiedJavaType param = new FullyQualifiedJavaType(super.paramFullName);
 
@@ -33,7 +34,7 @@ public class ParamObjectTemplate extends BaseTemplate {
 
         clazz.addAnnotation("@Data");
 
-        super.objectGenerator(clazz,introspectedTable);
+        super.objectGenerator(clazz,super.introspectedTable);
 
         clazz.setVisibility(JavaVisibility.PUBLIC);
 

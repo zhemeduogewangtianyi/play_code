@@ -20,6 +20,8 @@ public class BaseTemplate {
 
     protected final Context context;
 
+    protected IntrospectedTable introspectedTable;
+
     protected String doName;
 
     protected String doFullName;
@@ -48,9 +50,11 @@ public class BaseTemplate {
 
     protected String mapperFullName;
 
-    public BaseTemplate(GeneratorContext generatorContext, Context context) {
+    public BaseTemplate(GeneratorContext generatorContext, Context context,IntrospectedTable introspectedTable) {
         this.generatorContext = generatorContext;
         this.context = context;
+        this.introspectedTable = introspectedTable;
+
         String entityName = generatorContext.getEntityName();
 
         this.doName = entityName + "DO";

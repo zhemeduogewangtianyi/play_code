@@ -14,11 +14,12 @@ import java.util.HashSet;
 
 public class ViewObjectTemplate extends BaseTemplate {
 
-    public ViewObjectTemplate(GeneratorContext generatorContext, Context context) {
-        super(generatorContext, context);
+
+    public ViewObjectTemplate(GeneratorContext generatorContext, Context context, IntrospectedTable introspectedTable) {
+        super(generatorContext, context, introspectedTable);
     }
 
-    public GeneratedJavaFile generateViewObject(IntrospectedTable introspectedTable) {
+    public GeneratedJavaFile generateViewObject() {
 
         FullyQualifiedJavaType vo = new FullyQualifiedJavaType(this.voFullName);
 
@@ -33,7 +34,7 @@ public class ViewObjectTemplate extends BaseTemplate {
 
         clazz.addAnnotation("@Data");
 
-        super.objectGenerator(clazz,introspectedTable);
+        super.objectGenerator(clazz,super.introspectedTable);
 
         clazz.setVisibility(JavaVisibility.PUBLIC);
 

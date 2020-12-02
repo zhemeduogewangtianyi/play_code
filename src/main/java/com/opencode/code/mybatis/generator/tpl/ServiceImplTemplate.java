@@ -2,17 +2,21 @@ package com.opencode.code.mybatis.generator.tpl;
 
 import com.opencode.code.mybatis.context.GeneratorContext;
 import org.mybatis.generator.api.GeneratedJavaFile;
+import org.mybatis.generator.api.IntrospectedColumn;
+import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.config.Context;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 public class ServiceImplTemplate extends BaseTemplate {
 
-    public ServiceImplTemplate(GeneratorContext generatorContext, Context context) {
-        super(generatorContext, context);
+
+    public ServiceImplTemplate(GeneratorContext generatorContext, Context context, IntrospectedTable introspectedTable) {
+        super(generatorContext, context, introspectedTable);
     }
 
     //生成 serviceImpl 类
@@ -70,7 +74,9 @@ public class ServiceImplTemplate extends BaseTemplate {
 
         method.addBodyLine(super.doName + " " + firstCharToLowCase(super.doName) + " = JSONObject.parseObject(JSON.toJSONString(param),"+ super.doName +".class);");
         method.addBodyLine(mapperServiceName + ".insert("+ firstCharToLowCase(super.doName) +");");
-        method.addBodyLine("return " + firstCharToLowCase(super.doName) + ".get" + super.firstCharToUpperCase(generatorContext.getObjPrimaryKey()) + "();");
+        IntrospectedColumn introspectedColumn = super.introspectedTable.getPrimaryKeyColumns().get(0);
+        String javaProperty = introspectedColumn.getJavaProperty();
+        method.addBodyLine("return " + firstCharToLowCase(super.doName) + ".get" + super.firstCharToUpperCase(javaProperty) + "();");
 
         method.setReturnType(new FullyQualifiedJavaType("java.lang.Long"));
 

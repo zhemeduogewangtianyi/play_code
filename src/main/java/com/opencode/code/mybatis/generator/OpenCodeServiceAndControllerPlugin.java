@@ -29,11 +29,11 @@ public class OpenCodeServiceAndControllerPlugin extends PluginAdapter {
 
         List<GeneratedJavaFile> answer = new ArrayList<>();
 
-        GeneratedJavaFile gjf = new ServiceTemplate(this.generatorContext,super.context).generateServiceInterface();
-        GeneratedJavaFile gjf2 = new ServiceImplTemplate(this.generatorContext, super.context).generateServiceImpl();
-        GeneratedJavaFile gjf3 = new ControllerTemplate(this.generatorContext, super.context).generateController();
-        GeneratedJavaFile gjf4 = new ViewObjectTemplate(this.generatorContext,super.context).generateViewObject(introspectedTable);
-        GeneratedJavaFile gjf5 = new ParamObjectTemplate(this.generatorContext,super.context).generateParamObject(introspectedTable);
+        GeneratedJavaFile gjf = new ServiceTemplate(this.generatorContext,super.context,introspectedTable).generateServiceInterface();
+        GeneratedJavaFile gjf2 = new ServiceImplTemplate(this.generatorContext, super.context,introspectedTable).generateServiceImpl();
+        GeneratedJavaFile gjf3 = new ControllerTemplate(this.generatorContext, super.context,introspectedTable).generateController();
+        GeneratedJavaFile gjf4 = new ViewObjectTemplate(this.generatorContext,super.context,introspectedTable).generateViewObject();
+        GeneratedJavaFile gjf5 = new ParamObjectTemplate(this.generatorContext,super.context,introspectedTable).generateParamObject();
 
         answer.add(gjf);
         answer.add(gjf2);
