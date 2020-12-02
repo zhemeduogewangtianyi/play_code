@@ -1,4 +1,4 @@
-package com.opencode.code.mybatis.generator;
+package com.opencode.code.mybatis.generator.extern;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;

@@ -1,4 +1,4 @@
-package com.opencode.code.mybatis.generator;
+package com.opencode.code.mybatis.generator.extern;
 
 import org.mybatis.generator.codegen.mybatis3.IntrospectedTableMyBatis3Impl;
 

@@ -1,4 +1,4 @@
-package com.opencode.code.mybatis.generator;
+package com.opencode.code.mybatis.generator.extern;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
