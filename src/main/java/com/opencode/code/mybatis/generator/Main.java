@@ -17,6 +17,8 @@ public class Main {
         gc.setDriverClass("com.mysql.cj.jdbc.Driver");
         gc.setUsername("dddxhh");
         gc.setPassword("123456");
+
+        //user comment configuration
         gc.setAuthor("DDDXHH");
 
         //name settings
