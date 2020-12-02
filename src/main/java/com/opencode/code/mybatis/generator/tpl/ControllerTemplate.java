@@ -35,9 +35,9 @@ public class ControllerTemplate extends BaseTemplate {
                 new FullyQualifiedJavaType("org.springframework.beans.factory.annotation.Autowired"),
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RequestBody"),
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RequestParam"),
+                new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RequestMethod"),
                 //引入Service
                 new FullyQualifiedJavaType(super.serviceFullName),
-                new FullyQualifiedJavaType(super.voFullName),
                 new FullyQualifiedJavaType(super.paramFullName)
         )));
 
@@ -68,7 +68,7 @@ public class ControllerTemplate extends BaseTemplate {
     private void save(TopLevelClass clazz,String serviceFieldName){
         Method method = new Method("save");
 
-        method.addAnnotation("@RequestMapping(value = \"/save\")");
+        method.addAnnotation("@RequestMapping(value = \"/save\",method = RequestMethod.POST)");
 
         Parameter parameter = new Parameter(new FullyQualifiedJavaType(super.paramName),"param");
         parameter.addAnnotation("@RequestBody");
@@ -88,7 +88,7 @@ public class ControllerTemplate extends BaseTemplate {
 
         Method method = new Method("delete");
 
-        method.addAnnotation("@RequestMapping(value = \"/delete\")");
+        method.addAnnotation("@RequestMapping(value = \"/delete\",method = RequestMethod.POST)");
 
         Parameter parameter = new Parameter(new FullyQualifiedJavaType("java.lang.Long"),"id");
         parameter.addAnnotation("@RequestParam(name = \"id\")");
@@ -109,7 +109,7 @@ public class ControllerTemplate extends BaseTemplate {
 
         Method method = new Method("update");
 
-        method.addAnnotation("@RequestMapping(value = \"/update\")");
+        method.addAnnotation("@RequestMapping(value = \"/update\",method = RequestMethod.POST)");
 
         Parameter parameter = new Parameter(new FullyQualifiedJavaType(super.paramName),"param");
         parameter.addAnnotation("@RequestBody");
@@ -129,7 +129,7 @@ public class ControllerTemplate extends BaseTemplate {
 
         Method method = new Method("queryById");
 
-        method.addAnnotation("@RequestMapping(value = \"/queryById\")");
+        method.addAnnotation("@RequestMapping(value = \"/queryById\",method = RequestMethod.GET)");
 
         Parameter parameter = new Parameter(new FullyQualifiedJavaType("java.lang.Long"),"id");
         parameter.addAnnotation("@RequestParam(name = \"id\")");
