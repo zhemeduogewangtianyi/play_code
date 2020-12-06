@@ -116,7 +116,9 @@ public class ServiceImplTemplate extends BaseTemplate {
         Method method = new Method("delete");
 
         method.addAnnotation("@Override");
-        Parameter parameter = new Parameter(new FullyQualifiedJavaType("java.lang.Long"),"id");
+        List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
+        FullyQualifiedJavaType paramType = primaryKeyColumns.get(0).getFullyQualifiedJavaType();
+        Parameter parameter = new Parameter(paramType,"id");
         method.addParameter(parameter);
 
         method.addBodyLine("return " + mapperServiceName + ".deleteByPrimaryKey(id);");
@@ -158,7 +160,9 @@ public class ServiceImplTemplate extends BaseTemplate {
         Method method = new Method("queryById");
 
         method.addAnnotation("@Override");
-        Parameter parameter = new Parameter(new FullyQualifiedJavaType("java.lang.Long"),"id");
+        List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
+        FullyQualifiedJavaType paramType = primaryKeyColumns.get(0).getFullyQualifiedJavaType();
+        Parameter parameter = new Parameter(paramType,"id");
         method.addParameter(parameter);
 
         method.addBodyLine(super.doName + " " + firstCharToLowCase(super.doName) + " = " + mapperServiceName + ".selectByPrimaryKey(id);");

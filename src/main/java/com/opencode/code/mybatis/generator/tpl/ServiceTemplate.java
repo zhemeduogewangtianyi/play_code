@@ -93,7 +93,9 @@ public class ServiceTemplate extends BaseTemplate{
 
         addDoc("delete",method,true);
 
-        Parameter parameter = new Parameter(new FullyQualifiedJavaType("java.lang.Long"),"id");
+        List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
+        FullyQualifiedJavaType paramType = primaryKeyColumns.get(0).getFullyQualifiedJavaType();
+        Parameter parameter = new Parameter(paramType,"id");
         method.addParameter(parameter);
 
         method.setReturnType(new FullyQualifiedJavaType("java.lang.Integer"));
@@ -128,7 +130,9 @@ public class ServiceTemplate extends BaseTemplate{
 
         addDoc("queryById",method,true);
 
-        Parameter parameter = new Parameter(new FullyQualifiedJavaType("java.lang.Long"),"id");
+        List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
+        FullyQualifiedJavaType paramType = primaryKeyColumns.get(0).getFullyQualifiedJavaType();
+        Parameter parameter = new Parameter(paramType,"id");
         method.addParameter(parameter);
 
         if(StringUtils.isEmpty(super.voFullName)){

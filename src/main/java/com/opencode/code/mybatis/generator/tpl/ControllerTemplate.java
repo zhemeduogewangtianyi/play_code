@@ -3,6 +3,7 @@ package com.opencode.code.mybatis.generator.tpl;
 import com.opencode.code.mybatis.generator.context.GeneratorContext;
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.GeneratedJavaFile;
+import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.config.Context;
@@ -108,7 +109,9 @@ public class ControllerTemplate extends BaseTemplate {
 
         method.addAnnotation("@RequestMapping(value = \"/delete\",method = RequestMethod.POST)");
 
-        Parameter parameter = new Parameter(new FullyQualifiedJavaType("java.lang.Long"),"id");
+        List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
+        FullyQualifiedJavaType paramType = primaryKeyColumns.get(0).getFullyQualifiedJavaType();
+        Parameter parameter = new Parameter(paramType,"id");
         parameter.addAnnotation("@RequestParam(name = \"id\")");
         method.addParameter(parameter);
 
@@ -154,7 +157,9 @@ public class ControllerTemplate extends BaseTemplate {
 
         method.addAnnotation("@RequestMapping(value = \"/queryById\",method = RequestMethod.GET)");
 
-        Parameter parameter = new Parameter(new FullyQualifiedJavaType("java.lang.Long"),"id");
+        List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
+        FullyQualifiedJavaType paramType = primaryKeyColumns.get(0).getFullyQualifiedJavaType();
+        Parameter parameter = new Parameter(paramType,"id");
         parameter.addAnnotation("@RequestParam(name = \"id\")");
         method.addParameter(parameter);
 
