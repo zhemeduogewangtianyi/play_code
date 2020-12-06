@@ -1,6 +1,7 @@
 package com.opencode.code.mybatis.generator.tpl;
 
 import com.opencode.code.mybatis.generator.context.GeneratorContext;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.IntrospectedColumn;
@@ -95,7 +96,14 @@ public class ServiceImplTemplate extends BaseTemplate {
         String javaProperty = introspectedColumn.getJavaProperty();
         method.addBodyLine("return " + firstCharToLowCase(super.doName) + ".get" + super.firstCharToUpperCase(javaProperty) + "();");
 
-        method.setReturnType(new FullyQualifiedJavaType("java.lang.Long"));
+        List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
+        if(CollectionUtils.isEmpty(primaryKeyColumns)){
+            FullyQualifiedJavaType returnType = new FullyQualifiedJavaType("java.lang.Object");
+            method.setReturnType(returnType);
+        }else{
+            FullyQualifiedJavaType returnType = primaryKeyColumns.get(0).getFullyQualifiedJavaType();
+            method.setReturnType(returnType);
+        }
 
         method.setVisibility(JavaVisibility.PUBLIC);
 
