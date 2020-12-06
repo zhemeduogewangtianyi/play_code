@@ -30,16 +30,16 @@ public class Main {
         gc.setEntityName("Test");
 
         //base mapper package path
-        gc.setDoPackage("com.dddxhh.test.entity");
-        gc.setDaoPackage("com.dddxhh.test.dao");
+        gc.setDoPackage("com.opencode.test.entity");
+        gc.setDaoPackage("com.opencode.test.dao");
         gc.setMapperPackage("mapper");
 
         //extern service & serviceImpl & controller & ViewObject & ParamObject path
-        gc.setParamPackage("com.dddxhh.test.entity.param");
-        gc.setVoPackage("com.dddxhh.test.entity.vo");
-        gc.setServicePackage("com.dddxhh.test.service");
-        gc.setServiceImplPackage("com.dddxhh.test.service.impl");
-        gc.setControllerPackage("com.dddxhh.test.controller");
+        gc.setParamPackage("com.opencode.test.entity.param");
+        gc.setVoPackage("com.opencode.test.entity.vo");
+        gc.setServicePackage("com.opencode.test.service");
+        gc.setServiceImplPackage("com.opencode.test.service.impl");
+        gc.setControllerPackage("com.opencode.test.controller");
 
 
         //primaryKey
