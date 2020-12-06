@@ -2,11 +2,11 @@ package com.opencode.code.mybatis.generator.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.opencode.code.mybatis.context.GeneratorContext;
+import com.opencode.code.mybatis.generator.context.GeneratorContext;
 import com.opencode.code.mybatis.generator.extern.OpenCodeCommentGenerator;
 import com.opencode.code.mybatis.generator.extern.OpenCodeIntrospectedTable;
 import com.opencode.code.mybatis.generator.extern.OpenCodeServiceAndControllerPlugin;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.config.*;
 
 import java.util.Iterator;
@@ -52,21 +52,33 @@ public class GeneratorConfiguration {
         //file path - dao
         javaClientGeneratorConfiguration.setTargetProject(targetProject);
         javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
-        javaClientGeneratorConfiguration.setTargetPackage(generatorContext.getDaoPackage());
+        String daoPackage = generatorContext.getDaoPackage();
+        if(StringUtils.isEmpty(daoPackage)){
+            throw new RuntimeException("daoPackage not null !");
+        }
+        javaClientGeneratorConfiguration.setTargetPackage(daoPackage);
         javaClientGeneratorConfiguration.addProperty("enableSubPackages","false");
         context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
 
         //file path - mapper
         SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration = new SqlMapGeneratorConfiguration();
         sqlMapGeneratorConfiguration.setTargetProject(targetResources);
-        sqlMapGeneratorConfiguration.setTargetPackage(generatorContext.getMapperPackage());
+        String mapperPackage = generatorContext.getMapperPackage();
+        if(StringUtils.isEmpty(mapperPackage)){
+            throw new RuntimeException("mapperPackage not null !");
+        }
+        sqlMapGeneratorConfiguration.setTargetPackage(mapperPackage);
         sqlMapGeneratorConfiguration.addProperty("enableSubPackages","false");
         context.setSqlMapGeneratorConfiguration(sqlMapGeneratorConfiguration);
 
         //file path - entity
         JavaModelGeneratorConfiguration javaModelGeneratorConfiguration = new JavaModelGeneratorConfiguration();
         javaModelGeneratorConfiguration.setTargetProject(targetProject);
-        javaModelGeneratorConfiguration.setTargetPackage(generatorContext.getDoPackage());
+        String doPackage = generatorContext.getDoPackage();
+        if(StringUtils.isEmpty(doPackage)){
+            throw new RuntimeException("doPackage not null !");
+        }
+        javaModelGeneratorConfiguration.setTargetPackage(doPackage);
         javaModelGeneratorConfiguration.addProperty("immutable","false");
         javaModelGeneratorConfiguration.addProperty("enableSubPackages","false");
         javaModelGeneratorConfiguration.addProperty("trimStrings","true");

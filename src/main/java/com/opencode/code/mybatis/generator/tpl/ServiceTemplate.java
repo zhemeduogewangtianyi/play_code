@@ -1,14 +1,16 @@
 package com.opencode.code.mybatis.generator.tpl;
 
-import com.opencode.code.mybatis.context.GeneratorContext;
+import com.opencode.code.mybatis.generator.context.GeneratorContext;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.config.Context;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class ServiceTemplate extends BaseTemplate{
 
@@ -20,6 +22,11 @@ public class ServiceTemplate extends BaseTemplate{
     //生成 service 类
     public GeneratedJavaFile generateServiceInterface() {
 
+
+        if(StringUtils.isEmpty(super.serviceFullName) || StringUtils.isEmpty(super.serviceName)){
+            return null;
+        }
+
         FullyQualifiedJavaType service = new FullyQualifiedJavaType(super.serviceFullName);
 
         Interface serviceInterface = new Interface(service);
@@ -27,10 +34,19 @@ public class ServiceTemplate extends BaseTemplate{
         //注释
         addDoc(super.serviceName,serviceInterface,true);
 
-        serviceInterface.addImportedTypes(new HashSet<>(Arrays.asList(
-                new FullyQualifiedJavaType(super.voFullName),
-                new FullyQualifiedJavaType(super.paramFullName)
-        )));
+        List<FullyQualifiedJavaType> imported = new ArrayList<>();
+        if(StringUtils.isEmpty(super.voFullName)){
+            imported.add(new FullyQualifiedJavaType(super.doFullName));
+        }else{
+            imported.add(new FullyQualifiedJavaType(super.voFullName));
+        }
+        if(StringUtils.isEmpty(super.paramFullName)){
+            imported.add(new FullyQualifiedJavaType(super.doFullName));
+        }else{
+            imported.add(new FullyQualifiedJavaType(super.paramFullName));
+        }
+
+        serviceInterface.addImportedTypes(new HashSet<>(imported));
 
         save(serviceInterface);
         delete(serviceInterface);
@@ -48,7 +64,12 @@ public class ServiceTemplate extends BaseTemplate{
 
         addDoc("save",method,true);
 
-        Parameter parameter = new Parameter(new FullyQualifiedJavaType(super.paramName),"param");
+        Parameter parameter;
+        if(StringUtils.isEmpty(super.paramName)){
+            parameter = new Parameter(new FullyQualifiedJavaType(super.doName),"param");
+        }else{
+            parameter = new Parameter(new FullyQualifiedJavaType(super.paramName),"param");
+        }
         method.addParameter(parameter);
 
         method.setReturnType(new FullyQualifiedJavaType("java.lang.Long"));
@@ -78,7 +99,12 @@ public class ServiceTemplate extends BaseTemplate{
 
         addDoc("update",method,true);
 
-        Parameter parameter = new Parameter(new FullyQualifiedJavaType(super.paramName),"param");
+        Parameter parameter;
+        if(StringUtils.isEmpty(super.paramName)){
+            parameter = new Parameter(new FullyQualifiedJavaType(super.doName),"param");
+        }else{
+            parameter = new Parameter(new FullyQualifiedJavaType(super.paramName),"param");
+        }
         method.addParameter(parameter);
 
         method.setReturnType(new FullyQualifiedJavaType("java.lang.Integer"));
@@ -96,7 +122,12 @@ public class ServiceTemplate extends BaseTemplate{
         Parameter parameter = new Parameter(new FullyQualifiedJavaType("java.lang.Long"),"id");
         method.addParameter(parameter);
 
-        method.setReturnType(new FullyQualifiedJavaType(super.voFullName));
+        if(StringUtils.isEmpty(super.voFullName)){
+            method.setReturnType(new FullyQualifiedJavaType(super.doName));
+        }else{
+            method.setReturnType(new FullyQualifiedJavaType(super.voName));
+        }
+
 
         serviceInterface.addMethod(method);
         serviceInterface.setVisibility(JavaVisibility.DEFAULT);

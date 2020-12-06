@@ -19,7 +19,7 @@ public class GroovyUtils {
 
         String script = "class Test {\n" +
                 "\n" +
-                "    Object solution(String name,String age){\n" +
+                "    def solution(String name,String age){\n" +
                 "        List<Map<String,Object>> list = []\n" +
                 "        Map<String,Object> map = [:]\n" +
                 "        map.put(\"name\",name)\n" +

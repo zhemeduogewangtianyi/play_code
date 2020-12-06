@@ -1,7 +1,7 @@
 package com.opencode.code.mybatis.generator.util;
 
-import com.opencode.code.mybatis.context.GeneratorContext;
 import com.opencode.code.mybatis.generator.config.GeneratorConfiguration;
+import com.opencode.code.mybatis.generator.context.GeneratorContext;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.internal.DefaultShellCallback;

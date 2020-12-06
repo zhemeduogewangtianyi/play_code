@@ -1,6 +1,7 @@
 package com.opencode.code.mybatis.generator.tpl;
 
-import com.opencode.code.mybatis.context.GeneratorContext;
+import com.opencode.code.mybatis.generator.context.GeneratorContext;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
@@ -20,6 +21,10 @@ public class ParamObjectTemplate extends BaseTemplate {
     }
 
     public GeneratedJavaFile generateParamObject() {
+
+        if(StringUtils.isEmpty(super.paramFullName) || StringUtils.isEmpty(super.paramName)){
+            return null;
+        }
 
         FullyQualifiedJavaType param = new FullyQualifiedJavaType(super.paramFullName);
 

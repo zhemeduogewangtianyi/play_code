@@ -1,4 +1,4 @@
-package com.opencode.code.mybatis.context;
+package com.opencode.code.mybatis.generator.context;
 
 import lombok.Data;
 

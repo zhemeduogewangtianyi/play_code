@@ -1,7 +1,8 @@
 package com.opencode.code.mybatis.generator.tpl;
 
-import com.opencode.code.mybatis.context.GeneratorContext;
-import org.apache.commons.collections.CollectionUtils;
+import com.opencode.code.mybatis.generator.context.GeneratorContext;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.*;
@@ -57,26 +58,40 @@ public class BaseTemplate {
 
         String entityName = generatorContext.getEntityName();
 
-        this.doName = entityName + "DO";
-        this.doFullName = generatorContext.getDoPackage() + "." + entityName + "DO";
+        if(StringUtils.isNotBlank(generatorContext.getDoPackage())){
+            this.doName = entityName + "DO";
+            this.doFullName = generatorContext.getDoPackage() + "." + entityName + "DO";
+        }
 
-        this.paramName = entityName + "Param";
-        this.paramFullName = generatorContext.getParamPackage() + "." + entityName + "Param";
+        if(StringUtils.isNotBlank(generatorContext.getParamPackage())){
+            this.paramName = entityName + "Param";
+            this.paramFullName = generatorContext.getParamPackage() + "." + entityName + "Param";
+        }
 
-        this.voName = entityName + "VO";
-        this.voFullName = generatorContext.getVoPackage() + "." + entityName + "VO";
+        if(StringUtils.isNotBlank(generatorContext.getVoPackage())){
+            this.voName = entityName + "VO";
+            this.voFullName = generatorContext.getVoPackage() + "." + entityName + "VO";
+        }
 
-        this.serviceName = entityName + "Service";
-        this.serviceFullName = generatorContext.getServicePackage() + "." + entityName + "Service";
+        if(StringUtils.isNotBlank(generatorContext.getServicePackage())){
+            this.serviceName = entityName + "Service";
+            this.serviceFullName = generatorContext.getServicePackage() + "." + entityName + "Service";
+        }
 
-        this.serviceImplName = entityName + "ServiceImpl";
-        this.serviceImplFullName = generatorContext.getServiceImplPackage() + "." + entityName + "ServiceImpl";
+        if(StringUtils.isNotBlank(generatorContext.getServiceImplPackage())){
+            this.serviceImplName = entityName + "ServiceImpl";
+            this.serviceImplFullName = generatorContext.getServiceImplPackage() + "." + entityName + "ServiceImpl";
+        }
 
-        this.controllerName = entityName + "Controller";
-        this.controllerFullName = generatorContext.getControllerPackage() + "." + entityName + "Controller";
+        if(StringUtils.isNotBlank(generatorContext.getControllerPackage())){
+            this.controllerName = entityName + "Controller";
+            this.controllerFullName = generatorContext.getControllerPackage() + "." + entityName + "Controller";
+        }
 
-        this.mapperName = entityName + "Mapper";
-        this.mapperFullName = generatorContext.getDaoPackage() + "." + entityName + "Mapper";
+        if(StringUtils.isNotBlank(generatorContext.getDaoPackage())){
+            this.mapperName = entityName + "Mapper";
+            this.mapperFullName = generatorContext.getDaoPackage() + "." + entityName + "Mapper";
+        }
 
     }
 

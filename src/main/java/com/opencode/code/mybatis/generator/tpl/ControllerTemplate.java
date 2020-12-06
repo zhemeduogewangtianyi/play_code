@@ -1,14 +1,17 @@
 package com.opencode.code.mybatis.generator.tpl;
 
-import com.opencode.code.mybatis.context.GeneratorContext;
+import com.opencode.code.mybatis.generator.context.GeneratorContext;
+import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.config.Context;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 public class ControllerTemplate extends BaseTemplate {
 
@@ -19,6 +22,10 @@ public class ControllerTemplate extends BaseTemplate {
     // 生成 controller 类
     public GeneratedJavaFile generateController() {
 
+        if(StringUtils.isEmpty(super.controllerFullName) || StringUtils.isEmpty(super.controllerName)){
+            return null;
+        }
+
         FullyQualifiedJavaType controller = new FullyQualifiedJavaType(super.controllerFullName);
         TopLevelClass clazz = new TopLevelClass(controller);
 
@@ -28,18 +35,23 @@ public class ControllerTemplate extends BaseTemplate {
         //描述类的作用域修饰符
         clazz.setVisibility(JavaVisibility.PUBLIC);
 
-        //添加@Controller注解，并引入相应的类
-        clazz.addImportedTypes(new HashSet<>(Arrays.asList(
+        List<FullyQualifiedJavaType> imported = new ArrayList<>();
+        if(StringUtils.isEmpty(super.paramFullName)){
+            imported.add(new FullyQualifiedJavaType(super.doFullName));
+        }else{
+            imported.add(new FullyQualifiedJavaType(super.paramFullName));
+        }
+        Collections.addAll(imported,
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RestController"),
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RequestMapping"),
                 new FullyQualifiedJavaType("org.springframework.beans.factory.annotation.Autowired"),
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RequestBody"),
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RequestParam"),
                 new FullyQualifiedJavaType("org.springframework.web.bind.annotation.RequestMethod"),
-                //引入Service
-                new FullyQualifiedJavaType(super.serviceFullName),
-                new FullyQualifiedJavaType(super.paramFullName)
-        )));
+                new FullyQualifiedJavaType(super.serviceFullName));
+
+        //添加@Controller注解，并引入相应的类
+        clazz.addImportedTypes(new HashSet<>(imported));
 
         clazz.addAnnotation("@RestController");
         //添加@RequestMapping注解，并引入相应的类
@@ -70,7 +82,13 @@ public class ControllerTemplate extends BaseTemplate {
 
         method.addAnnotation("@RequestMapping(value = \"/save\",method = RequestMethod.POST)");
 
-        Parameter parameter = new Parameter(new FullyQualifiedJavaType(super.paramName),"param");
+        Parameter parameter;
+        if(StringUtils.isEmpty(super.paramName)){
+            parameter = new Parameter(new FullyQualifiedJavaType(super.doName),"param");
+        }else{
+            parameter = new Parameter(new FullyQualifiedJavaType(super.paramName),"param");
+        }
+
         parameter.addAnnotation("@RequestBody");
         method.addParameter(parameter);
 
@@ -111,7 +129,12 @@ public class ControllerTemplate extends BaseTemplate {
 
         method.addAnnotation("@RequestMapping(value = \"/update\",method = RequestMethod.POST)");
 
-        Parameter parameter = new Parameter(new FullyQualifiedJavaType(super.paramName),"param");
+        Parameter parameter;
+        if(StringUtils.isEmpty(super.paramName)){
+            parameter = new Parameter(new FullyQualifiedJavaType(super.doName),"param");
+        }else{
+            parameter = new Parameter(new FullyQualifiedJavaType(super.paramName),"param");
+        }
         parameter.addAnnotation("@RequestBody");
         method.addParameter(parameter);
 
