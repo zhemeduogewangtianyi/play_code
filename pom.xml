@@ -96,6 +96,18 @@
             <artifactId>mybatis-generator-core</artifactId>
         </dependency>
 
+        <!-- commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <!-- commons-collections4 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+        </dependency>
+
         <!-- spring data jpa -->
         <dependency>
             <groupId>org.springframework.data</groupId>

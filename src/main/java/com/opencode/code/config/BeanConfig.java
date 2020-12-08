@@ -17,14 +17,23 @@ import java.io.IOException;
 @MapperScan(basePackages = "com.opencode.code.dao", sqlSessionFactoryRef = "sqlSessionFactoryBean")
 public class BeanConfig {
 
+//    @Bean
+//    public DataSource dataSource(){
+//        DriverManagerDataSource druidDataSource = new DriverManagerDataSource();
+//        druidDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+//        druidDataSource.setUrl("jdbc:mysql://192.168.3.10:3306/dddxhh");
+//        druidDataSource.setUsername("dddxhh");
+//        druidDataSource.setPassword("123456");
+//        return druidDataSource;
+//    }
+
     @Bean
     public DataSource dataSource(){
         DriverManagerDataSource druidDataSource = new DriverManagerDataSource();
         druidDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-//        druidDataSource.setUrl("jdbc:mysql://192.168.33.10:3306/dddxhh");
-        druidDataSource.setUrl("jdbc:mysql://192.168.3.10:3306/dddxhh");
-        druidDataSource.setUsername("dddxhh");
-        druidDataSource.setPassword("123456");
+        druidDataSource.setUrl("jdbc:mysql://127.0.0.1:3306/test");
+        druidDataSource.setUsername("root");
+        druidDataSource.setPassword("root");
         return druidDataSource;
     }
 
