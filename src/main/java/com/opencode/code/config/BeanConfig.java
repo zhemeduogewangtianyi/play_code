@@ -81,7 +81,8 @@ public class BeanConfig extends ElasticsearchConfigurationSupport {
 //        String port = "80".trim();
 //        port = StringUtils.isEmpty(port) ? "80" : port;
 
-        String host = "127.0.0.1";
+//        String host = "127.0.0.1";
+        String host = "192.168.3.10";
         String port = "9200";
 
 
