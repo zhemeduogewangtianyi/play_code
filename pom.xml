@@ -27,6 +27,7 @@
         <mybatis-generator-core.version>1.3.7</mybatis-generator-core.version>
         <commons-lang3.version>3.9</commons-lang3.version>
         <common.collections4.version>4.4</common.collections4.version>
+        <hibernate-entitymanager.version>5.4.10.Final</hibernate-entitymanager.version>
     </properties>
 
     <dependencies>
@@ -109,9 +110,21 @@
         </dependency>
 
         <!-- spring data jpa -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.data</groupId>-->
+<!--            <artifactId>spring-data-jpa</artifactId>-->
+<!--        </dependency>-->
+
+        <!-- hibernate-entitymanager -->
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+        </dependency>
+
+        <!-- Spring Data ElasticSearch -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
 
     </dependencies>
@@ -186,6 +199,13 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
                 <version>${common.collections4.version}</version>
+            </dependency>
+
+            <!-- hibernate-entitymanager -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate-entitymanager.version}</version>
             </dependency>
 
             <dependency>
