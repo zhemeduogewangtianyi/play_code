@@ -1,5 +1,7 @@
 package com.opencode.code.config;
 
+import com.opencode.code.log.interceptor.LogInterceptor;
+import com.opencode.code.log.interceptor.callback.LogCallback;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.ibatis.logging.nologging.NoLoggingImpl;
@@ -11,6 +13,9 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -26,7 +31,9 @@ import java.net.InetAddress;
 
 @Configuration
 @MapperScan(basePackages = "com.opencode.code.dao", sqlSessionFactoryRef = "sqlSessionFactoryBean")
-public class BeanConfig extends ElasticsearchConfigurationSupport {
+public class BeanConfig extends ElasticsearchConfigurationSupport implements ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
 
 //    @Bean
 //    public DataSource dataSource(){
@@ -46,6 +53,18 @@ public class BeanConfig extends ElasticsearchConfigurationSupport {
         druidDataSource.setUsername("root");
         druidDataSource.setPassword("root");
         return druidDataSource;
+    }
+
+    @Bean
+    public LogInterceptor logInterceptor(){
+        return new LogInterceptor(new LogCallback() {
+            @Override
+            public boolean call(Object obj) {
+                //存入数据库
+                System.err.println(obj);
+                return false;
+            }
+        });
     }
 
     @Bean
@@ -81,8 +100,8 @@ public class BeanConfig extends ElasticsearchConfigurationSupport {
 //        String port = "80".trim();
 //        port = StringUtils.isEmpty(port) ? "80" : port;
 
-//        String host = "127.0.0.1";
-        String host = "192.168.3.10";
+        String host = "127.0.0.1";
+//        String host = "192.168.3.10";
         String port = "9200";
 
 
@@ -97,5 +116,8 @@ public class BeanConfig extends ElasticsearchConfigurationSupport {
     }
 
 
-
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 }

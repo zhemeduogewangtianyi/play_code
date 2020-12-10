@@ -1,6 +1,8 @@
 package com.opencode.code.controller;
 
 import com.opencode.code.common.Student;
+import com.opencode.code.log.interceptor.annotation.Loggable;
+import com.opencode.code.log.interceptor.enums.LogTypeEnum;
 import com.opencode.code.spring.data.elasticsearch.crud.StudentCrudRepository;
 import com.opencode.code.spring.data.elasticsearch.template.ElasticSearchTemplateTest;
 import org.apache.commons.lang3.StringUtils;
@@ -266,6 +268,7 @@ public class EsTestController {
 
     }
 
+    @Loggable(descp = "游标查询 es 数据",type = LogTypeEnum.OPERATOR,include = "scrollId")
     @RequestMapping(value = "/scrollQuery")
     public Object scrollQuery(@RequestParam String scrollId) {
 
