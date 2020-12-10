@@ -9,7 +9,6 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.AvgAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.ParsedAvg;
@@ -34,8 +33,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+@RequestMapping(value = "/es")
 @RestController
-public class TestController {
+public class EsTestController {
 
     @Autowired
     private StudentCrudRepository studentCrudRepository;
@@ -109,6 +109,14 @@ public class TestController {
         studentCrudRepository.deleteById(id);
 
         return id;
+    }
+
+    @RequestMapping(value = "/delAll")
+    public Object delAll() {
+
+        studentCrudRepository.deleteAll();
+
+        return "true";
     }
 
     @RequestMapping(value = "/queryById")
@@ -211,17 +219,17 @@ public class TestController {
         AggregatedPage<Student> search = (AggregatedPage<Student>) studentCrudRepository.search(build);
 
         //3、解析 -> 取出名为 names 的那个聚合
-        StringTerms names = (StringTerms)search.getAggregation("ages");
+        Aggregation ages = search.getAggregation("ages");
 
-        List<StringTerms.Bucket> buckets = names.getBuckets();
+//        List<StringTerms.Bucket> buckets = ages.getBuckets();
 
         // 4、遍历
-        for (StringTerms.Bucket bucket : buckets) {
-            // 5、获取桶中的key，即品牌名称
-            System.out.println(bucket.getKeyAsString());
-            // 6、获取桶中的文档数量
-            System.out.println(bucket.getDocCount());
-        }
+//        for (StringTerms.Bucket bucket : buckets) {
+//            // 5、获取桶中的key，即品牌名称
+//            System.out.println(bucket.getKeyAsString());
+//            // 6、获取桶中的文档数量
+//            System.out.println(bucket.getDocCount());
+//        }
 
         //总条数
         long totalElements = search.getTotalElements();
@@ -229,7 +237,7 @@ public class TestController {
         //总页数
         int totalPages = search.getTotalPages();
 
-        return search;
+        return ages;
 
     }
 
