@@ -15,6 +15,12 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 图片处理：
+ *  https://github.com/coobird/thumbnailator
+ * @author    WTY
+ * @date    2020/12/14 18:31
+ */
 public class ThumbnailatorUtils {
 
     public static void main(String[] args) throws IOException {
@@ -56,7 +62,6 @@ public class ThumbnailatorUtils {
      * 二维码
      * @author    WTY
      * @date    2020/12/14 18:29
-     * @return  java.awt.image.BufferedImage
      */
     public BufferedImage generatorRqCode() {
         try {
@@ -82,8 +87,6 @@ public class ThumbnailatorUtils {
      * 字体生成
      * @author    WTY
      * @date    2020/12/14 18:29
-     * @param content
-     * @return  java.awt.image.BufferedImage
      */
     public BufferedImage generatorFont(String content){
 
