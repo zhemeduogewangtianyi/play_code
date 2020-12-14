@@ -17,7 +17,12 @@ import java.util.Map;
 
 /**
  * 图片处理：
- *  https://github.com/coobird/thumbnailator
+ *  使用理由，ImageIO 在处理图片的时候会生成大量的临时文件，并发过高能够轻易让服务器崩溃
+ *  即使用脚本去删除产生的临时文件也无济于事。。。
+ *  或者说放入内存，不放磁盘。。。死得更快，内存的溢出速度远比磁盘的溢出速度快
+ *
+ *  源码地址：https://github.com/coobird/thumbnailator
+ *
  * @author    WTY
  * @date    2020/12/14 18:31
  */
