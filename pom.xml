@@ -150,6 +150,14 @@
             <artifactId>javase</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.jni.hello</groupId>
+            <artifactId>libstr</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jni/libstr.so</systemPath>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
