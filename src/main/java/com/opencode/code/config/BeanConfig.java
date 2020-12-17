@@ -2,6 +2,7 @@ package com.opencode.code.config;
 
 import com.opencode.code.log.interceptor.LogInterceptor;
 import com.opencode.code.log.interceptor.callback.LogCallback;
+import com.opencode.code.log.interceptor.result.LogResult;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.ibatis.logging.nologging.NoLoggingImpl;
@@ -59,9 +60,9 @@ public class BeanConfig extends ElasticsearchConfigurationSupport implements App
     public LogInterceptor logInterceptor(){
         return new LogInterceptor(new LogCallback() {
             @Override
-            public boolean call(Object obj) {
+            public boolean call(LogResult logResult) {
                 //存入数据库
-                System.err.println(obj);
+                System.err.println(logResult);
                 return false;
             }
         });

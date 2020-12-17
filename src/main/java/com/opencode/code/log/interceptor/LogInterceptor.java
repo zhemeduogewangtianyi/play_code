@@ -4,18 +4,23 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.opencode.code.log.interceptor.annotation.Loggable;
 import com.opencode.code.log.interceptor.callback.LogCallback;
-import com.opencode.code.log.interceptor.enums.LogScopeEnum;
-import com.opencode.code.log.interceptor.enums.LogTypeEnum;
+import com.opencode.code.log.interceptor.enums.LogSourceEnum;
+import com.opencode.code.log.interceptor.result.LogResult;
+import com.opencode.code.velocity.VelocityUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,76 +28,87 @@ import java.util.Map;
 @Aspect
 public class LogInterceptor {
 
+    private static final String COMMA = ",";
+    private static final String SP_POINT = "\\.";
+    private static final String POINT = ".";
+
     /** 日志 */
     private static final Logger LOGGER = LoggerFactory.getLogger(LogInterceptor.class);
-
-    private static final String COMMA = ",";
 
     /** 回调方法 */
     private final LogCallback logCallback;
 
     @Around(value = "@annotation(loggable)")
     public Object loggableProcessor(ProceedingJoinPoint point, Loggable loggable){
-        try{
 
-            String descp = loggable.descp();
-            String include = loggable.include();
-            LogTypeEnum logTypeEnum = loggable.type();
-            boolean console = loggable.loggable();
-            boolean scope = loggable.scope().contains(LogScopeEnum.BEFORE);
-            boolean db = loggable.db();
+        String title = loggable.title();
+        int type = loggable.type();
+        String descp = loggable.descp();
+        String include = loggable.include();
+        LogSourceEnum logSourceEnum = loggable.source();
+        boolean db = loggable.db();
+
+        try{
 
             String className = point.getSignature().getDeclaringType().getSimpleName();
 
             String methodName = point.getSignature().getName();
 
-            Map<String, Object> argsMap = processArgs(point, include);
+            Map<String, Object> argsMap = new HashMap<>(processArgs(point, include));
+
+            String userName = "小明明明";
+
+            argsMap.put("SYS_USER",userName);
+            argsMap.put("SYS_TIME", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
             String paramsText = JSON.toJSONString(argsMap);
 
+            Object proceed = null;
 
-            if(console && (scope)){
-                if(LOGGER.isInfoEnabled()){
-                    //可以搞下日志级别，日志的模板。。。。
-                    LOGGER.info("【{}】 接口入参成功!, 类名称：【{}】, 方法名称:【{}】, 请求参数:【{}】",descp,className, methodName , paramsText);
-                }
+            try{
+                proceed = point.proceed();
+            }catch(Exception e){
+                LOGGER.error("business process error !");
             }
 
-            Object proceed = point.proceed();
 
-            Class<?>[] paramsCls = getParams(point);
-
-            Method method = point.getTarget().getClass().getMethod(point.getSignature().getName(), paramsCls);
+            Signature sig = point.getSignature();
+            MethodSignature msig = (MethodSignature) sig;
+            Object target = point.getTarget();
+            Method method = target.getClass().getMethod(msig.getName(), msig.getParameterTypes());
 
             //获取返回值类型
             Type t = method.getAnnotatedReturnType().getType();
 
-            Object returnValue;
+            Object returnValue = null;
 
-            if(t.getTypeName().equals(String.class.getName())){
-                returnValue = JSONObject.parseObject(JSON.toJSONString(proceed),String.class);
-            }else{
-                returnValue = JSON.toJSONString(proceed);
-            }
-
-            String returnText =  JSON.toJSONString(returnValue);
-
-            if(console && (scope)){
-                if(LOGGER.isInfoEnabled()){
-                    //可以搞下日志级别，日志的模板。。。。
-                    LOGGER.info("【{}】 接口参数变化! 类名称：【{}】, 方法名称:【{}】, 处理后的请求参数:【{}】",descp,className, methodName , paramsText);
-                    LOGGER.info("【{}】 接口返回结果! 类名称：【{}】,  方法名称:【{}】, 返回结果:【{}】",descp,className, methodName , returnText);
+            try{
+                if(t.getTypeName().equals(String.class.getName())){
+                    returnValue = JSONObject.parseObject(JSON.toJSONString(proceed),String.class);
+                }else{
+                    returnValue = JSON.toJSONString(proceed);
                 }
+            }catch(Exception e){
+                LOGGER.error("business process error returnValue is null !");
             }
+
+
+            String returnText =  returnValue == null ? null : JSON.toJSONString(returnValue);
 
             if(db){
-                Map<String,Object> params = new HashMap<>();
-                params.put("className",className);
-                params.put("methodName",methodName);
-                params.put("descp",descp);
-                params.put("in",paramsText);
-                params.put("out",returnText);
-                logCallback.call(params);
+                LogResult logResult = new LogResult();
+                logResult.setClassName(className);
+                logResult.setMethodName(methodName);
+
+                String descpTpl = VelocityUtils.generator(descp, argsMap);
+                logResult.setDescp(descpTpl);
+                logResult.setLogSource(logSourceEnum.getValue());
+                logResult.setParams(paramsText);
+                logResult.setResult(returnText);
+                logResult.setSysUser(userName);
+                logResult.setTitle(title);
+                logResult.setType(type);
+                logCallback.call(logResult);
             }
 
             return proceed;
@@ -102,9 +118,8 @@ public class LogInterceptor {
         return null;
     }
 
-
     /** 处理入参和缓存的key */
-    private Map<String,Object> processArgs(ProceedingJoinPoint point,String include) {
+    private Map<String,Object> processArgs(ProceedingJoinPoint point,String include) throws NoSuchFieldException, IllegalAccessException {
         if(StringUtils.isEmpty(include)){
             return new LinkedHashMap<>();
         }
@@ -118,47 +133,40 @@ public class LogInterceptor {
 
         Map<String,Object> buff = new LinkedHashMap<>();
         String[] parameterNames = ((MethodSignature) point.getSignature()).getParameterNames();
+        Object[] args = point.getArgs();
         for(int i = 0 ; i < parameterNames.length ; i++){
+            Object arg = args[i];
             for (String s : split) {
-                if (s.equals(parameterNames[i])) {
-                    buff.put(s,point.getArgs()[i]);
+                if(s.contains(POINT)){
+                    String[] psp = s.split(SP_POINT);
+                    String objName = psp[0];
+                    String objArgsName = psp[1];
+                    if (objName.equals(parameterNames[i])) {
+                        if(arg instanceof Map){
+                            buff.put(objArgsName,((Map<?, ?>) arg).get(objArgsName));
+                        }else{
+                            Field declaredField = ((MethodSignature) point.getSignature()).getParameterTypes()[0].getDeclaredField(objArgsName);
+                            declaredField.setAccessible(true);
+                            Object o = declaredField.get(arg);
+                            buff.put(objArgsName,o);
+                        }
+
+                    }
+                }else{
+                    if (s.equals(parameterNames[i])) {
+                        if(arg instanceof Map){
+                            buff.put(s,arg);
+                        }else{
+                            buff.put(s,arg);
+                        }
+
+                    }
                 }
+
             }
         }
         return buff;
     }
-
-    /** 获取缓存数据 */
-    private Object doGet(ProceedingJoinPoint point,String key) throws NoSuchMethodException {
-        String cache = "redisTemplates.get(key)";
-        if (!StringUtils.isEmpty(cache)) {
-            Class<?>[] paramsCls = getParams(point);
-            //获取方法
-            Method method = point.getTarget().getClass().getMethod(point.getSignature().getName(), paramsCls);
-            //获取返回值类型
-            Type t = method.getAnnotatedReturnType().getType();
-            String data = "";
-            if(StringUtils.isEmpty(data)){
-                return null;
-            }
-            if(t.getTypeName().equals(String.class.getName())){
-                return JSONObject.parseObject(JSON.toJSONString(data),String.class);
-            }
-            return JSONObject.parseObject(data,t);
-        }
-        return null;
-    }
-
-    /** 获取参数 */
-    private Class<?>[] getParams(ProceedingJoinPoint point){
-        Object[] args = point.getArgs();
-        Class<?>[] paramsCls = new Class<?>[args.length];
-        for (int i = 0; i < args.length; ++i) {
-            paramsCls[i] = args[i].getClass();
-        }
-        return paramsCls;
-    }
-
 
     public LogInterceptor(LogCallback logCallback) {
         this.logCallback = logCallback;

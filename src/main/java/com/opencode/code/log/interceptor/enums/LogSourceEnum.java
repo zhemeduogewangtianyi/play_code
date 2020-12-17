@@ -1,12 +1,12 @@
 package com.opencode.code.log.interceptor.enums;
 
-public enum LogTypeEnum {
+public enum LogSourceEnum {
 
-    OPERATOR("0"), RESULT("1") , PARAM("2") ,ALL("3");
+    WEB("WEB"), RPC("RPC");
 
     private final String value;
 
-    LogTypeEnum(String value) {
+    LogSourceEnum(String value) {
         this.value = value;
     }
 
