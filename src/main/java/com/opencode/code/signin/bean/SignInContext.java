@@ -2,6 +2,8 @@ package com.opencode.code.signin.bean;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class SignInContext {
 
@@ -18,7 +20,17 @@ public class SignInContext {
     private String month;
 
     /** 本月累计签到天数 int 数字 */
-    private Integer count;
+    private Integer bitSet;
+
+    /** 累计天数 */
+    private Integer countDay;
+
+    /** 首次打卡时间 */
+    private Date firstSignInTime;
+
+    /** 最后打卡时间 */
+    private Date lastSignInTime;
+
 
 
 }

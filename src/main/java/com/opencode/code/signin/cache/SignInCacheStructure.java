@@ -2,13 +2,15 @@ package com.opencode.code.signin.cache;
 
 import com.opencode.code.signin.bean.SignInContext;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 /** 签到缓存结构 */
 public class SignInCacheStructure {
 
-    private static final Map<String,Map<String,Map<String, Map<String,Integer>>>> TYPE_MAP = new HashMap<>();
+    //type -> name -> year -> month -> count
+    private static final Map<String,Map<String,Map<String, Map<String,SignInContext>>>> TYPE_MAP = new HashMap<>();
 
     public static boolean cacheCount(SignInContext signInContext){
 
@@ -17,23 +19,39 @@ public class SignInCacheStructure {
         String year = signInContext.getYear();
         String month = signInContext.getMonth();
 
-        Map<String, Map<String, Map<String, Integer>>> userNameMap = TYPE_MAP.get(type);
+        Map<String, Map<String, Map<String, SignInContext>>> userNameMap = TYPE_MAP.get(type);
         if(userNameMap == null){
             userNameMap = new HashMap<>();
         }
-        Map<String, Map<String, Integer>> yearMap = userNameMap.get(username);
+        Map<String, Map<String, SignInContext>> yearMap = userNameMap.get(username);
         if(yearMap == null){
             yearMap = new HashMap<>();
         }
-        Map<String, Integer> monthMap = yearMap.get(year);
+        Map<String, SignInContext> monthMap = yearMap.get(year);
         if(monthMap == null){
             monthMap = new HashMap<>();
         }
-        Integer count = signInContext.getCount();
+
+        SignInContext sc = monthMap.get(month);
+        Date firstSignInTime = sc.getFirstSignInTime();
+        if(firstSignInTime == null){
+            firstSignInTime = new Date();
+        }
+        Integer countDay = sc.getCountDay();
+        if(countDay == null){
+            countDay = 0;
+        }
+
+        Integer count = signInContext.getBitSet();
         if(count == null){
             count = 0;
         }
-        monthMap.put(month,count);
+        signInContext.setBitSet(count);
+        signInContext.setCountDay(countDay + 1);
+        signInContext.setFirstSignInTime(firstSignInTime);
+        signInContext.setLastSignInTime(new Date());
+
+        monthMap.put(month,signInContext);
         yearMap.put(year,monthMap);
         userNameMap.put(username,yearMap);
         TYPE_MAP.put(type,userNameMap);
@@ -47,27 +65,32 @@ public class SignInCacheStructure {
         String year = signInContext.getYear();
         String month = signInContext.getMonth();
 
-        Map<String, Map<String, Map<String, Integer>>> userNameMap = TYPE_MAP.get(type);
+        Map<String, Map<String, Map<String, SignInContext>>> userNameMap = TYPE_MAP.get(type);
         if(userNameMap == null){
             userNameMap = new HashMap<>();
         }
-        Map<String, Map<String, Integer>> yearMap = userNameMap.get(username);
+        Map<String, Map<String, SignInContext>> yearMap = userNameMap.get(username);
         if(yearMap == null){
             yearMap = new HashMap<>();
         }
-        Map<String, Integer> monthMap = yearMap.get(year);
+        Map<String, SignInContext> monthMap = yearMap.get(year);
         if(monthMap == null){
             monthMap = new HashMap<>();
         }
-        Integer integer = monthMap.get(month);
+        SignInContext integer = monthMap.get(month);
         if(integer == null){
-            integer = 0;
+            integer = signInContext;
+            integer.setBitSet(0);
             monthMap.put(month,integer);
             yearMap.put(year,monthMap);
             userNameMap.put(username,yearMap);
             TYPE_MAP.put(type,userNameMap);
         }
-        return integer;
+        return integer.getBitSet();
+    }
+
+    public static Map<String,Map<String,Map<String, Map<String,SignInContext>>>> getTypeMapInfo(){
+        return TYPE_MAP;
     }
 
 }

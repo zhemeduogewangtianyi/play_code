@@ -1,15 +1,12 @@
 package com.opencode.code.signin.manager;
 
-import org.springframework.stereotype.Component;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-@Component
 public class BitSetManager {
 
-    public int countDay(int currentBitSet){
+    public static int countDay(int currentBitSet){
 
         String binaryBitSet = Integer.toBinaryString(currentBitSet);
 
@@ -23,12 +20,12 @@ public class BitSetManager {
         return day;
     }
 
-    public int megerBitSet(Integer bitSet){
+    public static int megerBitSet(Integer bitSet){
         //合并新老记录
         return (1 | (1 << bitSet)) >> 1;
     }
 
-    public Integer getBitSetDay(String ymd) throws ParseException {
+    public static Integer getBitSetDay(String ymd) throws ParseException {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(ymd));
         //今天几号
@@ -36,7 +33,7 @@ public class BitSetManager {
 
     }
 
-    public Integer getBitSetMonth(String ymd) throws ParseException {
+    public static Integer getBitSetMonth(String ymd) throws ParseException {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(ymd));
         //今天几月
@@ -44,7 +41,7 @@ public class BitSetManager {
 
     }
 
-    public Integer getBitSetYear(String ymd) throws ParseException {
+    public static Integer getBitSetYear(String ymd) throws ParseException {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(ymd));
         //今夕何年
