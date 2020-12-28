@@ -30,7 +30,7 @@ public class SignInController {
     @RequestMapping(value = "/testSignIn")
     public Object testSignIn(@RequestParam String type, @RequestParam String name) throws ParseException {
 
-        for(int y = 0 ; y < 10 ; y++){
+        for(int y = 0 ; y < 100 ; y++){
             String dateStr = "202" + y;
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
             Date date = sdf.parse(dateStr);
@@ -58,7 +58,7 @@ public class SignInController {
                     Date dayAddTime = dayAdd.getTime();
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     String ymd = simpleDateFormat.format(dayAddTime);
-                    System.out.println(ymd);
+//                    System.out.println(ymd);
                     testSignInManager.signInBatch(type,name,dayAddTime);
                 }
 
