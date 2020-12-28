@@ -2,6 +2,7 @@ package com.opencode.code.signin.manager;
 
 import com.opencode.code.signin.bean.SignInContext;
 import com.opencode.code.signin.cache.SignInCacheStructure;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -10,6 +11,9 @@ import java.util.Date;
 
 @Component
 public class TestSignInManager {
+
+    @Autowired
+    private SignInCacheStructure signInCacheStructure;
 
     /** 今日是否签到 */
     public boolean toDayIsSignInBatch(String type, String username, Date date) throws ParseException {
@@ -24,7 +28,7 @@ public class TestSignInManager {
         signInContext.setYear(yearKey);
         signInContext.setMonth(monthKey);
 
-        Integer cacheCount = SignInCacheStructure.getCacheCount(signInContext);
+        Integer cacheCount = signInCacheStructure.getCacheCount(signInContext);
 
         Integer bitSet = BitSetManager.getBitSetDay(ymd);
         int i1 = cacheCount >> (bitSet - 1);
@@ -49,7 +53,7 @@ public class TestSignInManager {
             signInContext.setYear(yearKey);
             signInContext.setMonth(monthKey);
 
-            Integer cacheCount = SignInCacheStructure.getCacheCount(signInContext);
+            Integer cacheCount = signInCacheStructure.getCacheCount(signInContext);
 
             Integer bitSet = BitSetManager.getBitSetDay(ymd);
             int meger = BitSetManager.megerBitSet(bitSet);
@@ -58,7 +62,7 @@ public class TestSignInManager {
             int day = BitSetManager.countDay(currentBitSet);
 
             signInContext.setBitSet(currentBitSet);
-            SignInCacheStructure.cacheCount(signInContext);
+            signInCacheStructure.cacheCount(signInContext);
 
             return "打卡成功，累计打卡 " + day + " 天";
         }

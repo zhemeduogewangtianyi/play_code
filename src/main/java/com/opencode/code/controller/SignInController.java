@@ -16,6 +16,12 @@ import java.util.Date;
 @RestController
 public class SignInController {
 
+    public static void main(String[] args) {
+        //0.125
+        double d = 0x1.0p-3;
+        System.out.println(d);
+    }
+
     @Autowired
     private SignInManager signInManager;
 
@@ -29,7 +35,6 @@ public class SignInController {
 
     @RequestMapping(value = "/testSignIn")
     public Object testSignIn(@RequestParam String type, @RequestParam String name) throws ParseException {
-
         for(int y = 0 ; y < 100 ; y++){
             String dateStr = "202" + y;
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
@@ -77,6 +82,12 @@ public class SignInController {
 
     @RequestMapping(value = "/getSignInCount")
     public Object getTypeMapInfo(@RequestParam String type, @RequestParam String name) throws ParseException {
+
+        return signInManager.getSignInCount(type,name);
+    }
+
+    @RequestMapping(value = "/getSignInInfo")
+    public Object getSignInInfo(@RequestParam String type, @RequestParam String name) throws ParseException {
 
         return signInManager.getSignInCount(type,name);
     }

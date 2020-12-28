@@ -1,18 +1,20 @@
 package com.opencode.code.signin.cache;
 
 import com.opencode.code.signin.bean.SignInContext;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 /** 签到缓存结构 */
+@Component
 public class SignInCacheStructure {
 
     //type -> name -> year -> month -> count
     private static final Map<String,Map<String,Map<String, Map<String,SignInContext>>>> TYPE_MAP = new HashMap<>();
 
-    public static boolean cacheCount(SignInContext signInContext){
+    public boolean cacheCount(SignInContext signInContext){
 
         String type = signInContext.getType();
         String username = signInContext.getUsername();
@@ -58,7 +60,7 @@ public class SignInCacheStructure {
         return true;
     }
 
-    public static Integer getCacheCount(SignInContext signInContext){
+    public Integer getCacheCount(SignInContext signInContext){
 
         String type = signInContext.getType();
         String username = signInContext.getUsername();
