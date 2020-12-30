@@ -1,8 +1,8 @@
-package com.opencode.code.controller;
+package com.opencode.code.answer.controller;
 
-import com.opencode.code.signin.cache.SignInCacheStructure;
-import com.opencode.code.signin.manager.SignInManager;
-import com.opencode.code.signin.manager.TestSignInManager;
+import com.opencode.code.answer.signin.cache.SignInCacheStructure;
+import com.opencode.code.answer.signin.manager.SignInManager;
+import com.opencode.code.answer.signin.manager.TestSignInManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,10 +75,10 @@ public class SignInController {
         return true;
     }
 
-    @RequestMapping(value = "/getTypeMapInfo")
-    public Object getTypeMapInfo() {
-        return SignInCacheStructure.getTypeMapInfo();
-    }
+//    @RequestMapping(value = "/getTypeMapInfo")
+//    public Object getTypeMapInfo() {
+//        return SignInCacheStructure.getTypeMapInfo();
+//    }
 
     @RequestMapping(value = "/getSignInCount")
     public Object getTypeMapInfo(@RequestParam String type, @RequestParam String name) throws ParseException {

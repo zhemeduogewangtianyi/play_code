@@ -1,4 +1,4 @@
-package com.opencode.code.signin.bean;
+package com.opencode.code.answer.signin.bean;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
-package com.opencode.code.signin.manager;
+package com.opencode.code.answer.signin.manager;
 
-import com.opencode.code.signin.bean.SignInContext;
-import com.opencode.code.signin.cache.SignInCacheStructure;
+import com.opencode.code.answer.signin.bean.SignInContext;
+import com.opencode.code.answer.signin.cache.SignInCacheStructure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
