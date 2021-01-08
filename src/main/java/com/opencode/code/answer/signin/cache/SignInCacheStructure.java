@@ -2,6 +2,7 @@ package com.opencode.code.answer.signin.cache;
 
 import com.opencode.code.answer.signin.bean.SignInContext;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -93,6 +94,22 @@ public class SignInCacheStructure {
 
     public static Map<String,Map<String,Map<String, Map<String,SignInContext>>>> getTypeMapInfo(){
         return TYPE_MAP;
+    }
+
+    public static Map<String,Map<String,Map<String, Map<String,SignInContext>>>> getSignInfo(String type ,String name){
+        Map<String, Map<String, Map<String, SignInContext>>> nameMap = TYPE_MAP.get(type);
+        if(CollectionUtils.isEmpty(nameMap)){
+            return null;
+        }
+        Map<String, Map<String, SignInContext>> yearMap = nameMap.get(name);
+        if(CollectionUtils.isEmpty(yearMap)){
+            return null;
+        }
+        Map<String,Map<String,Map<String, Map<String,SignInContext>>>> result = new HashMap<>();
+        Map<String,Map<String, Map<String,SignInContext>>> nameMapRes = new HashMap<>();
+        nameMapRes.put(name,yearMap);
+        result.put(type,nameMapRes);
+        return result;
     }
 
 }

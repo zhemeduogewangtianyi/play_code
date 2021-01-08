@@ -71,7 +71,7 @@ public class SignInManager {
         return (i1 & 1) != 0;
     }
 
-    public Integer getSignInCount(String type, String name) throws ParseException {
+    public Integer getSignInCount(String type, String name) {
         Map<String, Map<String, Map<String, Map<String, SignInContext>>>> typeMapInfo = SignInCacheStructure.getTypeMapInfo();
         Map<String, Map<String, Map<String, SignInContext>>> nameMap = typeMapInfo.get(type);
         if(nameMap == null){
@@ -93,6 +93,12 @@ public class SignInManager {
         }
 
         return count;
+    }
+
+    public Map<String,Map<String,Map<String, Map<String,SignInContext>>>> getSignInfo(String type, String name) {
+        Map<String, Map<String, Map<String, Map<String, SignInContext>>>> signInfo = SignInCacheStructure.getSignInfo(type, name);
+
+        return signInfo;
     }
 
 }

@@ -36,7 +36,7 @@ public class SignInController {
     @RequestMapping(value = "/testSignIn")
     public Object testSignIn(@RequestParam String type, @RequestParam String name) throws ParseException {
         for(int y = 0 ; y < 100 ; y++){
-            String dateStr = "202" + y;
+            String dateStr = "20" + ((y < 10) ? "0" + y : y + "");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
             Date date = sdf.parse(dateStr);
             Calendar yearC = Calendar.getInstance();
@@ -81,15 +81,15 @@ public class SignInController {
 //    }
 
     @RequestMapping(value = "/getSignInCount")
-    public Object getTypeMapInfo(@RequestParam String type, @RequestParam String name) throws ParseException {
+    public Object getTypeMapInfo(@RequestParam String type, @RequestParam String name) {
 
         return signInManager.getSignInCount(type,name);
     }
 
     @RequestMapping(value = "/getSignInInfo")
-    public Object getSignInInfo(@RequestParam String type, @RequestParam String name) throws ParseException {
+    public Object getSignInInfo(@RequestParam String type, @RequestParam String name) {
 
-        return signInManager.getSignInCount(type,name);
+        return signInManager.getSignInfo(type,name);
     }
 
 }
