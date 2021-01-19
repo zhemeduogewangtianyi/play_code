@@ -48,8 +48,16 @@ public class RedisConnectionController {
             config.setMaxWaitMillis(5000);
             pool = new JedisPool(config, host, port, 2000, password);
             jedis = pool.getResource();
-            String cmd = command.substring(0, command.indexOf(" "));
-            String[] args = command.substring(command.indexOf(" ") + 1).split(" ");
+
+            String cmd;
+            String[] args;
+            if(command.contains(" ")){
+                cmd = command.substring(0, command.indexOf(" "));
+                args = command.substring(command.indexOf(" ") + 1).split(" ");
+            }else{
+                cmd = command;
+                args = null;
+            }
 
             return execRedisCommand(jedis, cmd, args);
         }catch (JedisConnectionException e){
@@ -72,9 +80,18 @@ public class RedisConnectionController {
     private static List<String> execRedisCommand(Jedis jedis, String command, String... args) throws InvocationTargetException, IllegalAccessException {
         Protocol.Command cmd = Protocol.Command.valueOf(command.toUpperCase());
         Client client = jedis.getClient();
-        Method method = MethodUtils.getMatchingMethod(Client.class, "sendCommand", Protocol.Command.class, String[].class);
-        method.setAccessible(true);
-        method.invoke(client, cmd, args);
+
+        Method method;
+        if(args == null){
+            method =  MethodUtils.getMatchingMethod(Client.class, "sendCommand", Protocol.Command.class);
+            method.setAccessible(true);
+            method.invoke(client, cmd);
+        }else{
+            method =  MethodUtils.getMatchingMethod(Client.class, "sendCommand", Protocol.Command.class, String[].class);
+            method.setAccessible(true);
+            method.invoke(client, cmd, args);
+        }
+
         try {
             List<String> respList = new ArrayList<>();
             Object response = client.getOne();
