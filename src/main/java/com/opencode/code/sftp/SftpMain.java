@@ -3,9 +3,11 @@ package com.opencode.code.sftp;
 import com.jcraft.jsch.*;
 import com.opencode.code.sftp.config.SftpConfig;
 import com.opencode.code.sftp.manager.SftpClientRegisterCenter;
-import com.opencode.code.sftp.util.FileSizeConverUtil;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.concurrent.*;
 
 public class SftpMain {
@@ -51,11 +53,6 @@ public class SftpMain {
         for(File f : files){
             InputStream fis = new FileInputStream(f);
 
-//            try {
-//                System.out.println(FileSizeConverUtil.fileSizeConver(fis.available()));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
             pool.execute(new Runnable() {
                 @Override
                 public void run() {
