@@ -4,9 +4,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /** template */
 public class VelocityUtils {
@@ -34,13 +32,17 @@ public class VelocityUtils {
         map.put("name","dddxhh");
         map.put("age","16");
         map.put("gender","y");
+        map.put("pub_time",System.currentTimeMillis());
 
-        String template = "\r **** this is a template **** \r\n **** name:$!{name} - age:$!{age} - gender:$!{gender} **** \r\n";
+        String template = "\r **** this is a template **** \r\n **** name:$!{name} - age:$!{age} - gender:$!{gender} time:#set($time=$!{pub_time}+'')$time.substring(0,10) **** \r\n";
 
         String generator = VelocityUtils.generator(template, map);
 
         System.out.println(generator);
 
     }
+
+
+
 
 }

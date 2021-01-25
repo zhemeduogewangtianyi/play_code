@@ -31,6 +31,7 @@
         <thumbnailator.version>0.4.13</thumbnailator.version>
         <zxing.version>3.3.0</zxing.version>
         <jedis.version>2.9.0</jedis.version>
+        <jsch.version>0.1.54</jsch.version>
     </properties>
 
     <dependencies>
@@ -183,6 +184,11 @@
             <artifactId>jedis</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+        </dependency>
 
     </dependencies>
 
@@ -297,6 +303,13 @@
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
+            <dependency>
+                <groupId>com.jcraft</groupId>
+                <artifactId>jsch</artifactId>
+                <version>${jsch.version}</version>
             </dependency>
 
 
