@@ -1,4 +1,4 @@
-package com.opencode.code.sftp.server;
+package com.opencode.code.sftp.low.server;
 
 import java.io.*;
 import java.net.ServerSocket;

@@ -1,7 +1,9 @@
-package com.opencode.code.sftp.manager;
+package com.opencode.code.sftp.low.manager;
 
-import com.opencode.code.sftp.config.SftpConfig;
-import com.opencode.code.sftp.sftptask.SftpClientTask;
+import com.opencode.code.sftp.low.config.SftpConfig;
+import com.opencode.code.sftp.low.sftptask.SftpClientTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -9,6 +11,7 @@ import java.util.Map;
 
 public class SftpClientRegisterCenter {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SftpClientRegisterCenter.class);
 
     private static final Map<Long,SftpClientQueue> SFTP_MAP = new HashMap<>();
 
@@ -31,9 +34,30 @@ public class SftpClientRegisterCenter {
                 SftpClientQueue sftpClientQueue = new SftpClientQueue(sftpConfig);
                 if(sftpClientQueue.getQueueSize() < sftpClientQueue.getPoolSize()){
                     sftpClientQueue.addOneClient(sftpConfig);
+                    SFTP_MAP.put(id,sftpClientQueue);
+                    return true;
                 }
-                SFTP_MAP.put(id,sftpClientQueue);
+                return false;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public static synchronized boolean updateConfig(SftpConfig sftpConfig){
+
+        Long id = sftpConfig.getId();
+        try{
+            if(SFTP_MAP.containsKey(id)){
+
+                SftpClientQueue sftpClientQueue = SFTP_MAP.get(id);
+                sftpClientQueue.updateSftpConfig(sftpConfig);
                 return true;
+            }else{
+                LOGGER.error("not found {} !" ,id );
+                return false;
             }
         }catch(Exception e){
             e.printStackTrace();

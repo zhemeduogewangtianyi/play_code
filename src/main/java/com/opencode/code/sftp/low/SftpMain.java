@@ -1,8 +1,8 @@
-package com.opencode.code.sftp;
+package com.opencode.code.sftp.low;
 
 import com.jcraft.jsch.*;
-import com.opencode.code.sftp.config.SftpConfig;
-import com.opencode.code.sftp.manager.SftpClientRegisterCenter;
+import com.opencode.code.sftp.low.config.SftpConfig;
+import com.opencode.code.sftp.low.manager.SftpClientRegisterCenter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,8 +45,10 @@ public class SftpMain {
         long activeTime = 60000;
         SftpConfig sftpConfig = new SftpConfig(1L,openTime,activeTime,host,port,username,password,dir);
         SftpConfig sftpConfig1 = new SftpConfig(2L,openTime,activeTime,host,port,username,password,"cccc");
+        SftpConfig sftpConfig2 = new SftpConfig(3L,openTime,activeTime,host,port,username,password,"ccccc");
         boolean b = SftpClientRegisterCenter.addClient(sftpConfig);
         boolean b1 = SftpClientRegisterCenter.addClient(sftpConfig1);
+        boolean b2 = SftpClientRegisterCenter.addClient(sftpConfig2);
 
         File file = new File("C:\\Users\\王添一\\Desktop\\ccc");
         File[] files = file.listFiles();
@@ -60,19 +62,32 @@ public class SftpMain {
                 }
             });
 
-            InputStream fis1 = new FileInputStream(f);
-            pool.execute(new Runnable() {
-                @Override
-                public void run() {
-                    execute(2L,f.getName(),fis1);
-                }
-            });
+//            InputStream fis1 = new FileInputStream(f);
+//            pool.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    execute(2L,f.getName(),fis1);
+//                }
+//            });
+//
+//            InputStream fis2 = new FileInputStream(f);
+//            pool.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    execute(3L,f.getName(),fis2);
+//                }
+//            });
         }
     }
 
     public void execute(Long id,String fileName , InputStream fis){
         try{
-
+            if(fileName.contains("15")){
+                long openTime = System.currentTimeMillis();
+                long activeTime = 60000;
+                SftpConfig sftpConfig = new SftpConfig(1L,openTime,activeTime,host,port,username,password,"1111111ccccc");
+                SftpClientRegisterCenter.updateConfig(sftpConfig);
+            }
             boolean upload = SftpClientRegisterCenter.upload(id,fileName,fis);
             Thread.sleep(500);
         }catch(Exception e){

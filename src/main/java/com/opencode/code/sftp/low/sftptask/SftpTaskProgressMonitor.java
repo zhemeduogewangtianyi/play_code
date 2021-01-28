@@ -1,7 +1,7 @@
-package com.opencode.code.sftp.sftptask;
+package com.opencode.code.sftp.low.sftptask;
 
 import com.jcraft.jsch.SftpProgressMonitor;
-import com.opencode.code.sftp.util.FileSizeConverUtil;
+import com.opencode.code.sftp.low.util.FileSizeConverUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

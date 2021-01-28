@@ -1,4 +1,4 @@
-package com.opencode.code.sftp.config;
+package com.opencode.code.sftp.low.config;
 
 public class SftpConfig {
 
@@ -19,6 +19,8 @@ public class SftpConfig {
     private final String password;
 
     private final String dir;
+
+    private Long version = 0L;
 
     public SftpConfig(Long id,Long openTime, Long activeTime, String host, int port, String username, String password,String dir) {
 
@@ -75,5 +77,13 @@ public class SftpConfig {
 
     public String getDir() {
         return dir;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

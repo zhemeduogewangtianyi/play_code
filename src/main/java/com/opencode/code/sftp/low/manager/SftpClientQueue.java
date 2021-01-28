@@ -1,9 +1,12 @@
-package com.opencode.code.sftp.manager;
+package com.opencode.code.sftp.low.manager;
 
-import com.jcraft.jsch.*;
-import com.opencode.code.sftp.config.SftpConfig;
-import com.opencode.code.sftp.sftptask.SftpClientTask;
-import com.opencode.code.sftp.sftptask.SftpTaskProgressMonitor;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
+import com.opencode.code.sftp.low.config.SftpConfig;
+import com.opencode.code.sftp.low.sftptask.SftpClientTask;
+import com.opencode.code.sftp.low.sftptask.SftpTaskProgressMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -18,17 +21,17 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class SftpClientQueue {
 
-    private ReentrantLock reentrantLock = new ReentrantLock();
-    private Condition condition = reentrantLock.newCondition();
-    private AtomicBoolean isLock = new AtomicBoolean(false);
-
     private static final Logger LOGGER = LoggerFactory.getLogger(SftpClientQueue.class);
+
+    private final ReentrantLock reentrantLock = new ReentrantLock();
+    private final Condition condition = reentrantLock.newCondition();
+    private final AtomicBoolean isLock = new AtomicBoolean(false);
 
     private final Integer poolSize = 10;
 
     private final ArrayBlockingQueue<SftpClientTask> SFTP_POOL = new ArrayBlockingQueue<>(poolSize);
 
-    private final SftpConfig sftpConfig;
+    private transient SftpConfig sftpConfig;
 
     public SftpClientQueue(SftpConfig sftpConfig) {
         this.sftpConfig = sftpConfig;
@@ -42,25 +45,31 @@ public class SftpClientQueue {
             condition.await();
             reentrantLock.unlock();
             return upload(fileName,is);
-
         }
 
         SftpClientTask peek = SFTP_POOL.poll();
+
+        if(peek == null){
+            System.err.println(peek + " is null !!!!!!!!");
+        }
+        LOGGER.info("---------------------------------------------" + peek);
         ChannelSftp channelSftp = peek.getChannelSftp();
         sftpConfig.setRunState(true);
 
         try {
             String home = channelSftp.getHome();
             channelSftp.put(is, fileName,new SftpTaskProgressMonitor(is.available()));
-            LOGGER.info(channelSftp + " " + home + " " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            LOGGER.info(channelSftp + " " + this.sftpConfig.getVersion() + " " + home + " " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         } catch (SftpException e) {
             throw new RuntimeException(e.getMessage() + " fileName : " + fileName);
         }finally {
             if(is != null){
                 is.close();
             }
-            if(peek.getChannelSftp().isConnected()){
+            if(peek.getChannelSftp().isConnected() && sftpConfig.getVersion().equals(peek.getVersion())){
                 SFTP_POOL.put(peek);
+            }else{
+                peek.stopTask(this.sftpConfig);
             }
             if(isLock.get()){
                 reentrantLock.lock();
@@ -77,7 +86,7 @@ public class SftpClientQueue {
 
         try {
             while(SFTP_POOL.size() != poolSize){
-                SftpClientTask sftpClientThread = new SftpClientTask(1L, sftpConfig);
+                SftpClientTask sftpClientThread = new SftpClientTask(sftpConfig,this);
                 sftpClientThread.start();
                 SFTP_POOL.put(sftpClientThread);
             }
@@ -87,6 +96,11 @@ public class SftpClientQueue {
         }
 
         return false;
+    }
+
+    public synchronized void updateSftpConfig(SftpConfig sftpConfig) throws InterruptedException {
+        sftpConfig.setVersion(this.sftpConfig.getVersion() + 1);
+        this.sftpConfig = sftpConfig;
     }
 
     public synchronized boolean removeOneClient(SftpClientTask sftpClientThread){
@@ -107,10 +121,11 @@ public class SftpClientQueue {
                 session.disconnect();
             }
 
+            sftpClientThread.stopTask();
             boolean remove = SFTP_POOL.remove(sftpClientThread);
-            if(SFTP_POOL.size() < poolSize){
-                this.addOneClient(sftpConfig);
-            }
+//            if(SFTP_POOL.size() < poolSize){
+//                this.addOneClient(sftpConfig);
+//            }
             return remove;
         }
         return false;
@@ -122,5 +137,9 @@ public class SftpClientQueue {
 
     public Integer getQueueSize() {
         return SFTP_POOL.size();
+    }
+
+    public SftpConfig getSftpConfig() {
+        return sftpConfig;
     }
 }

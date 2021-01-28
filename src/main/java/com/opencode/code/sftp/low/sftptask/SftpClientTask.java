@@ -1,31 +1,46 @@
-package com.opencode.code.sftp.sftptask;
+package com.opencode.code.sftp.low.sftptask;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpATTRS;
-import com.opencode.code.sftp.config.SftpConfig;
-import com.opencode.code.sftp.manager.SftpClientRegisterCenter;
+import com.opencode.code.sftp.low.config.SftpConfig;
+import com.opencode.code.sftp.low.manager.SftpClientQueue;
+import com.opencode.code.sftp.low.manager.SftpClientRegisterCenter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SftpClientTask extends Thread{
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SftpClientTask.class);
+
     private SftpConfig sftpConfig;
+
+    private final SftpClientQueue sftpClientQueue;
 
     private ChannelSftp channelSftp;
 
+    private Session session;
+
     private boolean runnable = true;
 
-    public SftpClientTask(Long id, SftpConfig sftpConfig) {
-        super(id.toString());
+    private final Long version;
+
+    public SftpClientTask(SftpConfig sftpConfig,SftpClientQueue sftpClientQueue) {
+        super(sftpConfig.getId().toString());
+        this.version = sftpConfig.getVersion();
         this.sftpConfig = sftpConfig;
+        this.sftpClientQueue = sftpClientQueue;
 
         createChannelSftp();
 
     }
 
-    void createChannelSftp(){
+    private void createChannelSftp(){
 
         String username = this.sftpConfig.getUsername();
         String password = this.sftpConfig.getPassword();
@@ -34,12 +49,12 @@ public class SftpClientTask extends Thread{
 
         try{
             JSch jSch = new JSch();
-            Session session = jSch.getSession(username, host, port);
-            session.setPassword(password);
-            session.setConfig("StrictHostKeyChecking", "no");
-            session.setConfig("PreferredAuthentications", "password");
-            session.connect(5000);
-            ChannelSftp channelSftp = (ChannelSftp) session.openChannel("sftp");
+            this.session = jSch.getSession(username, host, port);
+            this.session.setPassword(password);
+            this.session.setConfig("StrictHostKeyChecking", "no");
+            this.session.setConfig("PreferredAuthentications", "password");
+            this.session.connect(5000);
+            ChannelSftp channelSftp = (ChannelSftp) this.session.openChannel("sftp");
             channelSftp.connect();
             channelSftp.cd(channelSftp.getHome());
             boolean dirExist = isDirExist(channelSftp, sftpConfig.getDir());
@@ -78,6 +93,21 @@ public class SftpClientTask extends Thread{
         return sftpConfig;
     }
 
+    public Long getVersion() {
+        return version;
+    }
+
+    public boolean stopTask(SftpConfig sftpConfig){
+        this.runnable = false;
+        this.sftpConfig = sftpConfig;
+        return true;
+    }
+
+    public boolean stopTask(){
+        this.runnable = false;
+        return true;
+    }
+
     @Override
     public void run() {
 
@@ -95,7 +125,6 @@ public class SftpClientTask extends Thread{
 
                 if((closed || ttl) && this.sftpConfig.getRunState()){
                     SftpClientRegisterCenter.removeOneClient(Long.valueOf(this.getName()),this);
-                    SftpClientRegisterCenter.addClient(sftpConfig);
                     this.runnable = false;
                 }else {
                     SftpConfig sftpConfig = this.getSftpConfig();
@@ -108,5 +137,10 @@ public class SftpClientTask extends Thread{
             }
         }
 
+        LOGGER.info(channelSftp + " update : " + this.sftpConfig.getVersion() + " " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        SftpClientRegisterCenter.removeOneClient(sftpConfig.getId(),this);
+        SftpClientRegisterCenter.addClient(this.sftpClientQueue.getSftpConfig());
+
     }
+
 }
