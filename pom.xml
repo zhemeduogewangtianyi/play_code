@@ -32,6 +32,8 @@
         <zxing.version>3.3.0</zxing.version>
         <jedis.version>2.9.0</jedis.version>
         <jsch.version>0.1.54</jsch.version>
+        <commons-pool2.version>2.5.0</commons-pool2.version>
+        <commons-net.version>3.6</commons-net.version>
     </properties>
 
     <dependencies>
@@ -190,6 +192,27 @@
             <artifactId>jsch</artifactId>
         </dependency>
 
+        <!-- SFTP - JSCH -->
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>${jsch.version}</version>
+        </dependency>
+
+        <!-- apache 连接池 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>${commons-pool2.version}</version>
+        </dependency>
+
+        <!-- FTP -->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>${commons-net.version}</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -305,7 +328,7 @@
                 <version>${jedis.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
+            <!-- SFTP - JSCH -->
             <dependency>
                 <groupId>com.jcraft</groupId>
                 <artifactId>jsch</artifactId>
@@ -320,6 +343,19 @@
         </dependency>
 
 
+            <!-- apache 连接池 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
+
+            <!-- FTP -->
+            <dependency>
+                <groupId>commons-net</groupId>
+                <artifactId>commons-net</artifactId>
+                <version>${commons-net.version}</version>
+            </dependency>
 
         </dependencies>
 
