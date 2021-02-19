@@ -50,7 +50,8 @@ public class BeanConfig extends ElasticsearchConfigurationSupport implements App
     public DataSource dataSource(){
         DriverManagerDataSource druidDataSource = new DriverManagerDataSource();
         druidDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        druidDataSource.setUrl("jdbc:mysql://127.0.0.1:3306/test");
+//        druidDataSource.setUrl("jdbc:mysql://127.0.0.1:3306/test");
+        druidDataSource.setUrl("jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC");
         druidDataSource.setUsername("root");
         druidDataSource.setPassword("root");
         return druidDataSource;
