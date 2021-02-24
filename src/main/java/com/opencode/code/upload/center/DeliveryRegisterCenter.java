@@ -43,6 +43,7 @@ public class DeliveryRegisterCenter implements InitializingBean {
     String password = "ftpuser";
     Integer port = 21;
 
+    /** 获取 FTPClient */
     public XchangeFtpClient getFtpClient(Long key){
 
         if(FTP_MAP.containsKey(key)){
@@ -55,6 +56,7 @@ public class DeliveryRegisterCenter implements InitializingBean {
         return null;
     }
 
+    /** 获取 SFTPClient */
     public XchangeSftpClient getSftpClient(Long key){
 
         if(SFTP_MAP.containsKey(key)){
@@ -67,6 +69,7 @@ public class DeliveryRegisterCenter implements InitializingBean {
         return null;
     }
 
+    /** 详情 */
     public List<Map<Long,Object>> info(){
 
         List<Map<Long,Object>> result = new ArrayList<>();
@@ -83,6 +86,7 @@ public class DeliveryRegisterCenter implements InitializingBean {
         return result;
     }
 
+    /** 新增 */
     public boolean add(XchangeDeliveryConfig config) throws Exception {
         config.setVersion(config.getVersion() == null ? 0 : config.getVersion());
         Long ftpId = config.getDeliveryId();
@@ -110,6 +114,7 @@ public class DeliveryRegisterCenter implements InitializingBean {
         return true;
     }
 
+    /** 删除 */
     public boolean delete(Long id) {
         int flag = -1;
         if(FTP_MAP.containsKey(id)){
@@ -133,40 +138,51 @@ public class DeliveryRegisterCenter implements InitializingBean {
         return true;
     }
 
-    public boolean update(XchangeDeliveryConfig config) {
+    /** 修改 */
+    public boolean update(XchangeDeliveryConfig config) throws Exception {
         int flag = -1;
-        Long ftpId = config.getDeliveryId();
-        if(FTP_MAP.containsKey(ftpId)){
+        Long deliveryId = config.getDeliveryId();
+        Integer protocol = config.getProtocol();
+
+        BaseDeliveryClientPool<XchangeFtpClient> ftpClientPool = FTP_MAP.get(deliveryId);
+        BaseDeliveryClientPool<XchangeSftpClient> sftpClientPool = SFTP_MAP.get(deliveryId);
+
+        if(ftpClientPool != null){
             flag = 0;
-        } else if(SFTP_MAP.containsKey(ftpId)){
+        } else if(sftpClientPool != null){
             flag = 1;
         }
         if(flag < 0){
             return false;
         }
 
+        XchangeDeliveryConfig oldConfig;
         if(flag == 0){
-            BaseDeliveryClientPool<XchangeFtpClient> oldFtpClientPool = FTP_MAP.get(ftpId);
-            if(oldFtpClientPool == null){
-                return false;
+            oldConfig = ftpClientPool.getDeliveryConfig();
+            if (!oldConfig.getProtocol().equals(protocol)) {
+                this.delete(deliveryId);
+                this.add(config);
+            }else{
+                config.setVersion(oldConfig.getVersion() + 1);
+                ftpClientPool.setFtpConfig(config);
             }
-            XchangeDeliveryConfig oldConfig = oldFtpClientPool.getDeliveryConfig();
-            config.setVersion(oldConfig.getVersion() + 1);
-            oldFtpClientPool.setFtpConfig(config);
-            return true;
+
         }else {
-            BaseDeliveryClientPool<XchangeSftpClient> oldFtpClientPool = SFTP_MAP.get(ftpId);
-            if(oldFtpClientPool == null){
-                return false;
+            oldConfig = sftpClientPool.getDeliveryConfig();
+            if (!oldConfig.getProtocol().equals(protocol)) {
+                this.delete(deliveryId);
+                this.add(config);
+            }else{
+                config.setVersion(oldConfig.getVersion() + 1);
+                sftpClientPool.setFtpConfig(config);
             }
-            XchangeDeliveryConfig oldConfig = oldFtpClientPool.getDeliveryConfig();
-            config.setVersion(oldConfig.getVersion() + 1);
-            oldFtpClientPool.setFtpConfig(config);
-            return true;
+
         }
+        return true;
 
     }
 
+    /** 返回 FTP 连接 */
     public void returnFTPConnection(Long id,XchangeFtpClient client) {
 
         XchangeFtpClientPool ftpClientPool = (XchangeFtpClientPool)FTP_MAP.get(id);
@@ -175,6 +191,7 @@ public class DeliveryRegisterCenter implements InitializingBean {
         }
     }
 
+    /** 返回 SFTP 连接 */
     public void returnSFTPConnection(Long id,XchangeSftpClient client) {
 
         XchangeSftpClientPool sftpClientPool = (XchangeSftpClientPool) SFTP_MAP.get(id);
