@@ -1,4 +1,4 @@
-package com.opencode.code.tomcat.one;
+package com.opencode.code.tomcat.one.client;
 
 import java.io.*;
 import java.net.Socket;
@@ -6,14 +6,14 @@ import java.net.Socket;
 public class OneSocket {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        Socket socket = new Socket("127.0.0.1",8080);
+        Socket socket = new Socket("127.0.0.1",8082);
 
         OutputStream os = socket.getOutputStream();
         PrintWriter pw = new PrintWriter(os,true);
-        pw.println("GET /index.jsp HTTP/1.1");
-        pw.println("Host: localhost:8080");
-//        pw.println("Connection: Close");
-        pw.println("Connection: keep-alive");
+        pw.println("GET /index.html HTTP/1.1");
+        pw.println("Host: localhost:8082");
+        pw.println("Connection: Close");
+//        pw.println("Connection: keep-alive");
 
         BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         StringBuffer sb = new StringBuffer(8096);
