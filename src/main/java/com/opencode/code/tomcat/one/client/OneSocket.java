@@ -6,7 +6,7 @@ import java.net.Socket;
 public class OneSocket {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        Socket socket = new Socket("127.0.0.1",8082);
+        Socket socket = new Socket("127.0.0.1",8083);
 
         OutputStream os = socket.getOutputStream();
         PrintWriter pw = new PrintWriter(os,true);

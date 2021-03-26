@@ -17,17 +17,21 @@ public class Main {
 //        gc.setMysqlJarPath("mysql-connector-java-8.0.21.jar");
 
         //jdbc databases Configuration
-        gc.setConnectionUrl("jdbc:mysql://192.168.3.10:3306/dddxhh");
+//        gc.setConnectionUrl("jdbc:mysql://192.168.3.10:3306/dddxhh");
+        gc.setConnectionUrl("jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC");
         gc.setDriverClass("com.mysql.cj.jdbc.Driver");
-        gc.setUsername("dddxhh");
-        gc.setPassword("123456");
+//        gc.setUsername("dddxhh");
+//        gc.setPassword("123456");
+
+        gc.setUsername("root");
+        gc.setPassword("root");
 
         //user comment configuration
         gc.setAuthor("DDDXHH");
 
         //name settings
-        gc.setTableName("ttest");
-        gc.setEntityName("ttest");
+        gc.setTableName("ali_xchange_big_data_map");
+        gc.setEntityName("AliXchangeBigDataMap");
 
         //base mapper package path
         gc.setDoPackage("com.opencode.code.entity");
