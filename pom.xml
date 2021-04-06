@@ -34,6 +34,7 @@
         <jsch.version>0.1.54</jsch.version>
         <commons-pool2.version>2.5.0</commons-pool2.version>
         <commons-net.version>3.6</commons-net.version>
+        <dubbo.version>2.7.9</dubbo.version>
     </properties>
 
     <dependencies>
@@ -213,6 +214,17 @@
             <version>${commons-net.version}</version>
         </dependency>
 
+        <!-- dubbo -->
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-dependencies-zookeeper</artifactId>
+            <type>pom</type>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -344,7 +356,6 @@
 
 
 
-
             <!-- apache 连接池 -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -357,6 +368,19 @@
                 <groupId>commons-net</groupId>
                 <artifactId>commons-net</artifactId>
                 <version>${commons-net.version}</version>
+            </dependency>
+
+            <!-- dubbo -->
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-dependencies-zookeeper</artifactId>
+                <version>${dubbo.version}</version>
+                <type>pom</type>
             </dependency>
 
         </dependencies>
