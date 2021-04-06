@@ -131,7 +131,6 @@ public class TestDubboDemo {
                 }
                 resultList.add(resMap);
             }
-
             return resultList;
         }catch(Exception e){
             e.printStackTrace();
