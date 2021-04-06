@@ -11,7 +11,7 @@ public class DubboDemoMain {
 
     public static void main(String[] args) throws Exception {
 
-        Object o = new TestDubboDemo().testHsfDemo();
+        Object o = new TestDubboDemo().testDubboDemo();
         System.out.println(o);
     }
 

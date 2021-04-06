@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class TestDubboDemo {
 
-    public Object testHsfDemo() throws Exception {
+    public Object testDubboDemo() throws Exception {
 
 //        DubboBaseInfoConfig config = DubboDemoMain.selectById();
         DubboBaseInfoConfig config = DubboDemoMain.selectById1();
