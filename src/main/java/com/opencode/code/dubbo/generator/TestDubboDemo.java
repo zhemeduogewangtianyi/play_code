@@ -1,6 +1,5 @@
 package com.opencode.code.dubbo.generator;
 
-import com.alibaba.fastjson.JSON;
 import com.opencode.code.dubbo.generator.config.DubboBaseInfoConfig;
 import com.opencode.code.dubbo.generator.descriptor.ParameterDescriptor;
 import com.opencode.code.dubbo.generator.descriptor.ReturnDataDescriptor;
@@ -13,8 +12,10 @@ import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.rpc.service.GenericService;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TestDubboDemo {
 
@@ -59,63 +60,10 @@ public class TestDubboDemo {
 
         GenericService hWService = (GenericService) consumerBean.get();
         try{
+
             Object o = hWService.$invoke(config.getMethodName(), parameterType, parameter);
 
-            Map<String,Object> jsonMap = new HashMap<>();
-            int start = 0;
-            JsonParseUtil.parseJSON2Map(start,jsonMap,JsonParseUtil.checkFormat(o instanceof String ? o.toString() : JSON.toJSONString(o)),null);
-
-            Map<String, Map<String, List<Map.Entry<String, Object>>>> collect = jsonMap.entrySet().stream().collect(
-                    Collectors.groupingBy(
-                            c -> c.getKey().indexOf("$_") == -1 ? "one" : c.getKey().substring(c.getKey().indexOf("$_")
-                            ),
-                            Collectors.groupingBy(
-                                    k -> !k.getKey().contains(".") ? "common" : "$_1"
-                            )
-                    )
-            );
-
-            List<Map<String,Object>> result = new ArrayList<>();
-
-            Map<String, List<Map.Entry<String, Object>>> one = collect.get("one");
-            List<Map.Entry<String, Object>> common = one.get("common");
-            Map<String,Object> commonMap = new HashMap<>();
-            for(Map.Entry<String,Object> comm : common){
-                commonMap.put(comm.getKey(),comm.getValue());
-            }
-
-            List<Map.Entry<String, Object>> first = one.get("$_1");
-            Map<String,Object> firstMap = new HashMap<>();
-            for(Map.Entry<String,Object> f : first){
-                firstMap.put(f.getKey(),f.getValue());
-            }
-            firstMap.putAll(commonMap);
-
-            result.add(firstMap);
-
-            for(Iterator<Map.Entry<String, Map<String, List<Map.Entry<String, Object>>>>> car = collect.entrySet().iterator(); car.hasNext() ; ){
-                Map.Entry<String, Map<String, List<Map.Entry<String, Object>>>> next = car.next();
-                String key = next.getKey();
-                Map<String, List<Map.Entry<String, Object>>> value = next.getValue();
-
-                if(key.equals("one")){
-                   continue;
-                }else{
-
-                    Map<String,Object> map = new HashMap<>();
-                    for(Iterator<Map.Entry<String, List<Map.Entry<String, Object>>>> two = value.entrySet().iterator(); two.hasNext() ; ){
-                        Map.Entry<String, List<Map.Entry<String, Object>>> next1 = two.next();
-                        List<Map.Entry<String, Object>> value1 = next1.getValue();
-                        for(Map.Entry<String, Object> v1 : value1){
-                            String key1 = v1.getKey();
-                            map.put(key1.substring(0,key1.indexOf("$_")),v1.getValue());
-                        }
-                    }
-                    map.putAll(commonMap);
-                    result.add(map);
-
-                }
-            }
+            List<Map<String, Object>> result = JsonParseUtil.jsonMapsToList(o);
 
             List<ReturnDataDescriptor> returns = config.getReturns();
 
@@ -131,6 +79,7 @@ public class TestDubboDemo {
                 }
                 resultList.add(resMap);
             }
+
             return resultList;
         }catch(Exception e){
             e.printStackTrace();

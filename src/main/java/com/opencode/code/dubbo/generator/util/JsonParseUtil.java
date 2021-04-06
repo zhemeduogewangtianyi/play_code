@@ -1,9 +1,12 @@
 package com.opencode.code.dubbo.generator.util;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.opencode.code.dubbo.generator.descriptor.ReturnDataDescriptor;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class JsonParseUtil {
 
@@ -95,6 +98,63 @@ public class JsonParseUtil {
 
             }
         }
+    }
+
+    public static List<Map<String,Object>> jsonMapsToList(Object o){
+
+        Map<String,Object> jsonMap = new HashMap<>();
+        int start = 0;
+        JsonParseUtil.parseJSON2Map(start,jsonMap,JsonParseUtil.checkFormat(o instanceof String ? o.toString() : JSON.toJSONString(o)),null);
+
+        Map<String, Map<String, List<Map.Entry<String, Object>>>> collect = jsonMap.entrySet().stream().collect(
+                Collectors.groupingBy(
+                        c -> !c.getKey().contains("$_") ? "one" : c.getKey().substring(c.getKey().indexOf("$_")
+                        ),
+                        Collectors.groupingBy(
+                                k -> !k.getKey().contains(".") ? "common" : "$_1"
+                        )
+                )
+        );
+
+        List<Map<String,Object>> result = new ArrayList<>();
+
+        Map<String, List<Map.Entry<String, Object>>> one = collect.get("one");
+        List<Map.Entry<String, Object>> common = one.get("common");
+        Map<String,Object> commonMap = new HashMap<>();
+        for(Map.Entry<String,Object> comm : common){
+            commonMap.put(comm.getKey(),comm.getValue());
+        }
+
+        List<Map.Entry<String, Object>> first = one.get("$_1");
+        Map<String,Object> firstMap = new HashMap<>();
+        for(Map.Entry<String,Object> f : first){
+            firstMap.put(f.getKey(),f.getValue());
+        }
+        firstMap.putAll(commonMap);
+
+        result.add(firstMap);
+
+        for(Iterator<Map.Entry<String, Map<String, List<Map.Entry<String, Object>>>>> car = collect.entrySet().iterator(); car.hasNext() ; ){
+            Map.Entry<String, Map<String, List<Map.Entry<String, Object>>>> next = car.next();
+            String key = next.getKey();
+            Map<String, List<Map.Entry<String, Object>>> value = next.getValue();
+
+            if(!key.equals("one")){
+                Map<String,Object> map = new HashMap<>();
+                for(Iterator<Map.Entry<String, List<Map.Entry<String, Object>>>> two = value.entrySet().iterator(); two.hasNext() ; ){
+                    Map.Entry<String, List<Map.Entry<String, Object>>> next1 = two.next();
+                    List<Map.Entry<String, Object>> value1 = next1.getValue();
+                    for(Map.Entry<String, Object> v1 : value1){
+                        String key1 = v1.getKey();
+                        map.put(key1.substring(0,key1.indexOf("$_")),v1.getValue());
+                    }
+                }
+                map.putAll(commonMap);
+                result.add(map);
+            }
+        }
+
+        return result;
     }
 
     public static boolean isNested(Object jsonObj) {
