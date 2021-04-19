@@ -58,22 +58,16 @@ public class ServerThread extends Thread {
                 br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
                 String data;
                 while ((data = br.readLine()) != null) {
-                    System.out.println("Server : " + this.getName() + " -> " + data);
 
+                    System.out.println("Server : " + this.getName() + " -> " + data);
                     YellowDuckServerRegister.send(this.getName() , data);
-//                    os = socket.getOutputStream();
-//                    bw = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-//                    String hi = "hello world !";
-//                    bw.write(hi);
-//                    bw.write("\n");
-//                    bw.flush();
 
                 }
 
                 Thread.sleep(ThreadLocalRandom.current().nextInt(100) + 1);
 
             } catch (Exception e) {
-                System.out.println(this.getName() + " 已离线！");
+                System.out.println(this.getName() + " 已注销！");
                 off = false;
                 YellowDuckServerRegister.unregister(this.getName());
             }finally {
@@ -86,6 +80,7 @@ public class ServerThread extends Thread {
 
         }
 
+        YellowDuckServerRegister.send(this.getName() , getName() + " 被注销！");
 
         try {
             if (bw != null) {

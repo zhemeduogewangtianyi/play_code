@@ -48,9 +48,8 @@ public class YellowDuckClient extends Thread {
     @Override
     public void run() {
 
-        this.send(getName() + " 上线了");
+        this.send(getName() + " 已注册！");
 
-//        while(off){
         while(off){
             try {
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
@@ -58,7 +57,6 @@ public class YellowDuckClient extends Thread {
                 while((data = br.readLine()) != null){
                     System.out.println("Client : " + this.getName() +  " -> " + data);
                 }
-
             }  catch (IOException e) {
                 e.printStackTrace();
             }finally {
@@ -69,13 +67,8 @@ public class YellowDuckClient extends Thread {
                 }
             }
 
-//            try {
-//                Thread.sleep(ThreadLocalRandom.current().nextInt(100) + 1);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-
         }
+
         if(os != null){
             try {
                 os.close();
