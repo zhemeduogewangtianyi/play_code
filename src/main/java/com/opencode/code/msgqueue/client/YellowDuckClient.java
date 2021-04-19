@@ -27,10 +27,6 @@ public class YellowDuckClient extends Thread {
         return true;
     }
 
-    public static void main(String[] args) throws IOException {
-        new YellowDuckClient("127.0.0.1",8888,"WTY");
-    }
-
 
     public boolean send(String msg){
 
@@ -52,7 +48,7 @@ public class YellowDuckClient extends Thread {
     @Override
     public void run() {
 
-        this.send(getName() + "上线了");
+        this.send(getName() + " 上线了");
 
 //        while(off){
         while(off){
@@ -60,7 +56,7 @@ public class YellowDuckClient extends Thread {
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
                 String data ;
                 while((data = br.readLine()) != null){
-                    System.out.println(data);
+                    System.out.println("Client : " + this.getName() +  " -> " + data);
                 }
 
             }  catch (IOException e) {

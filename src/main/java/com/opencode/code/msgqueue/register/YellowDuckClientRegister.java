@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class YellowDuckRegister {
+public class YellowDuckClientRegister {
 
-    private static final Map<String, YellowDuckClient> REGISTER_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, YellowDuckClient> CLIENT_REGISTER_MAP = new ConcurrentHashMap<>();
 
     public static synchronized boolean register(String name,String host,int port){
-        YellowDuckClient yellowDuckClient = null;
+        YellowDuckClient yellowDuckClient ;
         try {
             yellowDuckClient = new YellowDuckClient(host,port,name);
         } catch (IOException e) {
@@ -23,11 +23,11 @@ public class YellowDuckRegister {
         if(StringUtils.isEmpty(name)){
             return false;
         }
-        if(REGISTER_MAP.containsKey(name)){
+        if(CLIENT_REGISTER_MAP.containsKey(name)){
             return false;
         }
         yellowDuckClient.start();
-        REGISTER_MAP.put(name,yellowDuckClient);
+        CLIENT_REGISTER_MAP.put(name,yellowDuckClient);
         return true;
     }
 
@@ -36,18 +36,18 @@ public class YellowDuckRegister {
         if(StringUtils.isEmpty(name)){
             return false;
         }
-        if(!REGISTER_MAP.containsKey(name)){
+        if(!CLIENT_REGISTER_MAP.containsKey(name)){
             return false;
         }
 
-        YellowDuckClient yellowDuckClient = REGISTER_MAP.get(name);
+        YellowDuckClient yellowDuckClient = CLIENT_REGISTER_MAP.get(name);
         boolean shutdown = yellowDuckClient.shutdown();
-        return shutdown && REGISTER_MAP.remove(name) != null;
+        return shutdown && CLIENT_REGISTER_MAP.remove(name) != null;
     }
 
-    public static synchronized boolean send(String name,String msg){
+    public static boolean send(String name,String msg){
 
-        YellowDuckClient yellowDuckClient = REGISTER_MAP.get(name);
+        YellowDuckClient yellowDuckClient = CLIENT_REGISTER_MAP.get(name);
         if(yellowDuckClient == null){
             return false;
         }

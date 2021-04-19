@@ -1,9 +1,9 @@
 package com.opencode.code.msgqueue.server;
 
 
-import org.springframework.util.Base64Utils;
+import com.opencode.code.msgqueue.register.YellowDuckServerRegister;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ThreadLocalRandom;
@@ -24,21 +24,8 @@ public class YellowDuckServer extends ServerSocket implements Runnable {
 
                 Socket socket = this.accept();
 
-                InputStream is = socket.getInputStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
-                String data;
-                while((data = br.readLine()) != null){
-                    System.out.println(data);
-
-                    OutputStream os = socket.getOutputStream();
-                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-                    String hi = "hello world !";
-                    bw.write(hi);
-                    bw.write("\n");
-                    bw.flush();
-
-                }
-
+                String hostName = socket.getInetAddress().getHostName();
+                YellowDuckServerRegister.register(hostName,new ServerThread(hostName,socket));
 
                 Thread.sleep(ThreadLocalRandom.current().nextInt(100) + 1);
 
