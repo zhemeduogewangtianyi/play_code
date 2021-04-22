@@ -29,7 +29,7 @@ public class Main {
                 wty[0].start();
 
                 try {
-                    wty1[0] = new YellowDuckClient("30.248.139.11", 8888, "WTY");
+                    wty1[0] = new YellowDuckClient("30.203.209.98", 8888, "WTY");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -48,12 +48,13 @@ public class Main {
             Map<String,Object> data = new HashMap<>();
             data.put("command",next);
             data.put("date", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-            data.put("name","WTY");
+            data.put("name",wty1[0].getName());
             data.put("ip",wty1[0].getIp());
             map.put("data",data);
             String msg = JSON.toJSONString(map);
             boolean send = wty1[0].send(msg);
 
+            data.put("name",wty[0].getName());
             data.put("ip",wty[0].getIp());
             String msg1 = JSON.toJSONString(map);
             boolean send1 = wty[0].send(msg1);
