@@ -8,18 +8,24 @@ public class YellowDuckClient extends Thread {
 
     private final Socket socket;
 
-    private InputStream is;
-    private OutputStream os;
+    private final String ip;
+
+    private final InputStream is;
+    private final OutputStream os;
 
     private boolean off = true;
 
     public YellowDuckClient(String host,int port,String name) throws IOException {
         super(name);
-
+        this.ip = host;
         socket = new Socket(host,port);
         is = socket.getInputStream();
         os = socket.getOutputStream();
 
+    }
+
+    public String getIp(){
+        return ip;
     }
 
     public boolean shutdown(){
@@ -30,7 +36,6 @@ public class YellowDuckClient extends Thread {
 
     public boolean send(String msg){
 
-        PrintWriter pw = null;
         try {
             OutputStream os = socket.getOutputStream();
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
