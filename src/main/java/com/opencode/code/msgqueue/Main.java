@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.opencode.code.msgqueue.client.YellowDuckClient;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class Main {
                 wty[0].start();
 
                 try {
-                    wty1[0] = new YellowDuckClient("30.203.209.98", 8888, "WTY");
+                    wty1[0] = new YellowDuckClient(InetAddress.getLocalHost().getHostAddress(), 8888, "WTY");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
