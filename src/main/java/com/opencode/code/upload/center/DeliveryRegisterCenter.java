@@ -202,38 +202,38 @@ public class DeliveryRegisterCenter implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        XchangeDeliveryConfig config = new XchangeDeliveryConfig();
-        config.setDeliveryId(1L);
-        config.setHost(host);
-        config.setUsername(username);
-        config.setPassword(password);
-        config.setPort(port);
-
-        config.setChangeDir("cccc");
-        config.setPoolSize(10);
-        config.setCheckFrequency(1L);
-        config.setConnectTimeout(5000);
-        config.setVersion(0L);
-        XchangeFtpClientFactory factory = new XchangeFtpClientFactory(config);
-        XchangeFtpClientPool ftpClientPool = new XchangeFtpClientPool(factory);
-        FTP_MAP.put(1L,ftpClientPool);
-
-
-        XchangeDeliveryConfig sconfig = new XchangeDeliveryConfig();
-        sconfig.setDeliveryId(2L);
-        sconfig.setHost(host);
-        sconfig.setUsername("sftpuser");
-        sconfig.setPassword("sftpuser");
-        sconfig.setPort(22);
-
-        sconfig.setChangeDir("dddd");
-        sconfig.setPoolSize(10);
-        sconfig.setCheckFrequency(1L);
-        sconfig.setConnectTimeout(5000);
-        sconfig.setVersion(0L);
-        XchangeSftpClientFactory sfactory = new XchangeSftpClientFactory(sconfig);
-        XchangeSftpClientPool sftpClientPool = new XchangeSftpClientPool(sfactory);
-        SFTP_MAP.put(2L,sftpClientPool);
+//        XchangeDeliveryConfig config = new XchangeDeliveryConfig();
+//        config.setDeliveryId(1L);
+//        config.setHost(host);
+//        config.setUsername(username);
+//        config.setPassword(password);
+//        config.setPort(port);
+//
+//        config.setChangeDir("cccc");
+//        config.setPoolSize(10);
+//        config.setCheckFrequency(1L);
+//        config.setConnectTimeout(5000);
+//        config.setVersion(0L);
+//        XchangeFtpClientFactory factory = new XchangeFtpClientFactory(config);
+//        XchangeFtpClientPool ftpClientPool = new XchangeFtpClientPool(factory);
+//        FTP_MAP.put(1L,ftpClientPool);
+//
+//
+//        XchangeDeliveryConfig sconfig = new XchangeDeliveryConfig();
+//        sconfig.setDeliveryId(2L);
+//        sconfig.setHost(host);
+//        sconfig.setUsername("sftpuser");
+//        sconfig.setPassword("sftpuser");
+//        sconfig.setPort(22);
+//
+//        sconfig.setChangeDir("dddd");
+//        sconfig.setPoolSize(10);
+//        sconfig.setCheckFrequency(1L);
+//        sconfig.setConnectTimeout(5000);
+//        sconfig.setVersion(0L);
+//        XchangeSftpClientFactory sfactory = new XchangeSftpClientFactory(sconfig);
+//        XchangeSftpClientPool sftpClientPool = new XchangeSftpClientPool(sfactory);
+//        SFTP_MAP.put(2L,sftpClientPool);
 
     }
 }

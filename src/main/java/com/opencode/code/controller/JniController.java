@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/jni")
 public class JniController {
 
-    static{
-        System.loadLibrary("JniDll");
-    }
+//    static{
+//        System.loadLibrary("JniDll");
+//    }
 
     @RequestMapping(value = "/testJni")
     public Object testJni(){
