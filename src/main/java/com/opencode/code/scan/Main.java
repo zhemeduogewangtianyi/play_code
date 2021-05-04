@@ -4,13 +4,10 @@ import com.opencode.code.scan.annotation.ScanProcessor;
 import com.opencode.code.scan.defination.ProcessorBeanDefinition;
 import com.opencode.code.scan.register.ProcessorRegister;
 import com.opencode.code.scan.service.Processor;
-import com.opencode.code.scan.service.impl.ChangeFileProcessImpl;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.security.ProtectionDomain;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.regex.Matcher;
 
 public class Main {

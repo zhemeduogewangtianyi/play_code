@@ -43,7 +43,7 @@ public class GameOneJPanel extends JPanel implements MouseMotionListener {
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
 
-        Image image = toolkit.getImage("C:\\Users\\王添一\\Desktop\\ccc\\下载.gif");
+        Image image = toolkit.getImage("C:\\Users\\WTY\\Downloads\\下载.gif");
 
         g2.drawImage(image,x,y,null);
 
