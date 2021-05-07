@@ -1,17 +1,15 @@
-package com.opencode.code.scheduler;
+package com.opencode.code.controller;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,12 +46,6 @@ public class MainScheduler implements ApplicationContextAware, InitializingBean 
     @Scheduled(fixedDelay = 5000L,initialDelay = 3000)
     public void two(){
         System.out.println("2222222222");
-    }
-
-    @Bean
-    public TaskScheduler taskScheduler(){
-        TaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
-        return taskScheduler;
     }
 
     public void shutdown() throws IllegalAccessException, NoSuchFieldException {
