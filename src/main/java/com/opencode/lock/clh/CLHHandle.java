@@ -1,4 +1,4 @@
-package com.opencode.code.lock.clh;
+package com.opencode.lock.clh;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

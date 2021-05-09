@@ -1,4 +1,4 @@
-package com.opencode.code.lock;
+package com.opencode.lock;
 
 public interface Lock {
 
