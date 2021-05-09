@@ -1,9 +1,5 @@
 package com.opencode.suanfa;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class Rotate {
 
     public static void main(String[] args) throws Exception {
@@ -12,7 +8,7 @@ public class Rotate {
 
         System.out.println(a_arr);
 
-        rotate(a_arr,3);
+        rotate(a_arr,2);
 
         System.out.println(a_arr);
 
