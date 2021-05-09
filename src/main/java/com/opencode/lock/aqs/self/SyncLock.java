@@ -1,4 +1,4 @@
-package com.opencode.lock.aqs;
+package com.opencode.lock.aqs.self;
 
 
 import com.opencode.lock.Lock;
