@@ -4,8 +4,9 @@ import java.util.concurrent.*;
 
 public class Main {
 
+    //当 BlockingQueue 的 size 不够被拒绝后，重入队列会导致不公平的情况
     private static ThreadPoolExecutor executor = new ThreadPoolExecutor(100, 200, 60, TimeUnit.SECONDS,
-            new ArrayBlockingQueue<>(10000), new ThreadFactory() {
+            new ArrayBlockingQueue<>(10), new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
             return new Thread(r);
@@ -34,6 +35,7 @@ public class Main {
                 }
             });
         }
+        executor.shutdown();
 
 
     }
