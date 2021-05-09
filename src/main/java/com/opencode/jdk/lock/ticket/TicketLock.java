@@ -1,6 +1,6 @@
-package com.opencode.lock.ticket;
+package com.opencode.jdk.lock.ticket;
 
-import com.opencode.lock.Lock;
+import com.opencode.jdk.lock.Lock;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;

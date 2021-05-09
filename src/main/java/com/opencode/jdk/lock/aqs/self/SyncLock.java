@@ -1,7 +1,7 @@
-package com.opencode.lock.aqs.self;
+package com.opencode.jdk.lock.aqs.self;
 
 
-import com.opencode.lock.Lock;
+import com.opencode.jdk.lock.Lock;
 
 public class SyncLock implements Lock {
 

@@ -1,4 +1,4 @@
-package com.opencode.lock.aqs.semaphore;
+package com.opencode.jdk.lock.aqs.semaphore;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
-package com.opencode.lock.mcs;
+package com.opencode.jdk.lock.mcs;
 
-import com.opencode.lock.Lock;
+import com.opencode.jdk.lock.Lock;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;

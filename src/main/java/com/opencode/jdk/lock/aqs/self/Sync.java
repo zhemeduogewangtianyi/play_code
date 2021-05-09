@@ -1,4 +1,4 @@
-package com.opencode.lock.aqs.self;
+package com.opencode.jdk.lock.aqs.self;
 
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
