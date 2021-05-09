@@ -1,4 +1,4 @@
-package com.opencode.jdk.thread.use.yield;
+package com.opencode.jdk.thread.use.yield01;
 
 /**
     测试线程 yield 对线程运行耗时的影响

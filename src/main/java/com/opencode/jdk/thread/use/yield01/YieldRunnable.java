@@ -1,4 +1,4 @@
-package com.opencode.jdk.thread.use.yield;
+package com.opencode.jdk.thread.use.yield01;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
