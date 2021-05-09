@@ -8,7 +8,7 @@ public class Rotate {
 
         System.out.println(a_arr);
 
-        rotate(a_arr,1);
+        rotate(a_arr,3);
 
         System.out.println(a_arr);
 
