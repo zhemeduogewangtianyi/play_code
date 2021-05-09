@@ -1,5 +1,9 @@
 package com.opencode.suanfa;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Rotate {
 
     public static void main(String[] args) throws Exception {
@@ -11,7 +15,6 @@ public class Rotate {
         rotate(a_arr,3);
 
         System.out.println(a_arr);
-
 
     }
 
@@ -31,8 +34,7 @@ public class Rotate {
     }
 
     public static void swap(char[] char_arr, int i, int j) {
-
-        for(int left = i , mid = j >> 1, right = j - 1 ; left < mid ; left++ , right-- ){
+        for(int left = i , mid = (i+j) >> 1, right = j - 1 ; left < mid ; left++ , right-- ){
             char_arr[left] = (char) (char_arr[left] ^ char_arr[right]);
             char_arr[right] = (char) (char_arr[left] ^ char_arr[right]);
             char_arr[left] = (char) (char_arr[left] ^ char_arr[right]);
