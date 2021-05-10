@@ -237,6 +237,13 @@
             </exclusions>
         </dependency>
 
+        <!-- 验证对象结构 -->
+        <dependency>
+            <groupId>org.openjdk.jol</groupId>
+            <artifactId>jol-cli</artifactId>
+            <version>0.14</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>

@@ -7,44 +7,72 @@ public class SourceObject {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SourceObject.class);
 
-    private Object left = new Object();
-    private Object right = new Object();
+    private Object o = new Object();
 
-    private boolean isWork = false;
+    private Thread t;
 
-    public void left(){
+    private AlternateNode node = new AlternateNode();
 
-        synchronized (left){
-            if(isWork){
-                right.notify();
+    public void left(Thread t){
+
+        synchronized (o){
+//            if(t == this.t){
+            if(t == node.next().getT()){
                 try {
-                    left.wait();
+                    o.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+
+//            this.t = t;
+            node.add(t);
+
             String name = Thread.currentThread().getName();
             LOGGER.info(name);
-            isWork = false;
+            o.notify();
         }
     }
 
-    public void right(){
+    public void right(Thread t){
 
-        synchronized (right){
-            if(!isWork){
+        synchronized (o){
+//            if(t == this.t){
+            if(t == node.next().getT()){
                 try {
-                    left.notify();
-                    right.wait();
+                    o.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
+//            this.t = t;
+            node.add(t);
+
             String name = Thread.currentThread().getName();
             LOGGER.info(name);
-            isWork = true;
-            right.notify();
+            o.notify();
+        }
+    }
+
+    public void mid(Thread t){
+
+        synchronized (o){
+//            if(t == this.t){
+            if(t == node.next().getT()){
+                try {
+                    o.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+//            this.t = t;
+            node.add(t);
+
+            String name = Thread.currentThread().getName();
+            LOGGER.info(name);
+            o.notify();
         }
     }
 

@@ -13,7 +13,7 @@ public class Left implements Runnable{
     @Override
     public void run() {
         while(true){
-            sourceObject.left();
+            sourceObject.left(Thread.currentThread());
         }
 
     }

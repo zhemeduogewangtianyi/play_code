@@ -1,6 +1,7 @@
 package com.opencode.jdk.thread.use.waitAndNotify02;
 
 import com.opencode.jdk.thread.use.waitAndNotify02.runnable.Left;
+import com.opencode.jdk.thread.use.waitAndNotify02.runnable.Mid;
 import com.opencode.jdk.thread.use.waitAndNotify02.runnable.Right;
 
 import java.util.ArrayList;
@@ -23,6 +24,11 @@ public class Main {
         Thread rightT = new Thread(right);
         rightT.setName("right - ");
         rightT.start();
+
+        Mid mid = new Mid(sourceObject);
+        Thread midT = new Thread(mid);
+        midT.setName("mid - ");
+        midT.start();
 
 
     }
