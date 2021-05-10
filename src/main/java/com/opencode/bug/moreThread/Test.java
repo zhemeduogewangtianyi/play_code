@@ -16,7 +16,6 @@ public class Test extends BaseI{
     private static final Logger LOGGER = LoggerFactory.getLogger(Test.class);
 
     private final List<Base> list = new ArrayList<>();
-
     {
         list.add(new A());
         list.add(new B());
@@ -57,7 +56,9 @@ public class Test extends BaseI{
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
+
                     test.setList(test.list);
+
                     Context context = new Context();
                     context.setT(Thread.currentThread());
                     context.setName(finalI + "");
