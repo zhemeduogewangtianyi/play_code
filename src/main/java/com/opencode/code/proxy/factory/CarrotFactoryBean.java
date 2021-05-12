@@ -9,12 +9,12 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 @Component
-public class CarrotFactoryBean implements FactoryBean {
+public class CarrotFactoryBean<T> implements FactoryBean<T> {
 
     @Override
-    public Object getObject() throws Exception {
+    public T getObject() throws Exception {
         Class<UserService> cls = UserService.class;
-        Object o = Proxy.newProxyInstance(CarrotFactoryBean.class.getClassLoader(), new Class[]{cls}, new InvocationHandler() {
+        return (T) Proxy.newProxyInstance(CarrotFactoryBean.class.getClassLoader(), new Class[]{cls}, new InvocationHandler() {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                 if (Object.class.equals(method.getDeclaringClass())) {
@@ -24,7 +24,6 @@ public class CarrotFactoryBean implements FactoryBean {
                 }
             }
         });
-        return o;
     }
 
 
