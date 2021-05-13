@@ -1,4 +1,4 @@
-package com.opencode.code.tomcat;
+package com.opencode.code.tomcat.codeview01;
 
 import javax.servlet.*;
 import java.io.IOException;
