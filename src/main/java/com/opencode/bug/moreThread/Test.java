@@ -2,6 +2,7 @@ package com.opencode.bug.moreThread;
 
 import com.alibaba.fastjson.JSON;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,17 +16,20 @@ public class Test extends BaseI{
     private static final Logger LOGGER = LoggerFactory.getLogger(Test.class);
 
     private final List<Base> list = new ArrayList<>();
-
     {
         list.add(new A());
         list.add(new B());
         list.add(new C());
     }
 
+    public Test(Lock look) {
+        super(look);
+    }
+
     public static void main(String[] args) {
 //        CLHLock clhLock = new CLHLock();
 
-        Test test = new Test();
+        Test test = new Test(new ReentrantLock());
 
         ThreadPoolExecutor executor = new ThreadPoolExecutor(100, 200, 60, TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(10000), new ThreadFactory() {
@@ -52,10 +56,9 @@ public class Test extends BaseI{
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
-//                    clhLock.lock();
-//                    LOGGER.info(finalI + "");
-//                    clhLock.unlock();
+
                     test.setList(test.list);
+
                     Context context = new Context();
                     context.setT(Thread.currentThread());
                     context.setName(finalI + "");
@@ -90,15 +93,20 @@ class Context{
 
 abstract class BaseI{
 
-    private List<Base> list = Collections.synchronizedList(new ArrayList<>());
+    private List<Base> list = new CopyOnWriteArrayList();
 
-    private Lock look = new ReentrantLock();
+    private Lock look;
+
+    public BaseI(Lock look) {
+        this.look = look;
+    }
 
     public void a(Context context){
         for(Base b : list){
             if(!b.support(context)){
                 continue;
             }
+            context.setUuid(context.getUuid() + "!" + context.getUuid());
             context.setName(context.getName() + " a , ");
             b.execute(context);
         }
@@ -110,6 +118,7 @@ abstract class BaseI{
             if(!b.support(context)){
                 continue;
             }
+            context.setUuid(context.getUuid() + "!" + context.getUuid());
             context.setName(context.getName() + "b , ");
             b.execute(context);
         }
@@ -121,6 +130,7 @@ abstract class BaseI{
             if(!b.support(context)){
                 continue;
             }
+            context.setUuid(context.getUuid() + "!" + context.getUuid());
             context.setName(context.getName() + "c , ");
             b.execute(context);
         }
@@ -157,12 +167,7 @@ class A implements Base {
     public void execute(Context context) {
         boolean b = Thread.currentThread().getId() == context.getT().getId();
         context.setName(context.getName() + " A.execute() ");
-        try {
-            Thread.sleep(ThreadLocalRandom.current().nextInt(50));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-//        LOGGER.info("AAAAA : " + b);
+        context.setUuid(context.getUuid() + "!" + context.getUuid());
     }
 
     @Override
@@ -178,13 +183,8 @@ class B implements Base {
     @Override
     public void execute(Context context) {
         boolean b = Thread.currentThread().getId() == context.getT().getId();
-        try {
-            Thread.sleep(ThreadLocalRandom.current().nextInt(50));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        context.setUuid(context.getUuid() + "!" + context.getUuid());
         context.setName(context.getName() + " B.execute() ");
-//        LOGGER.info("BBBBB : " + b);
     }
 
     @Override
@@ -199,14 +199,21 @@ class C implements Base {
 
     @Override
     public void execute(Context context) {
-        try {
-            Thread.sleep(ThreadLocalRandom.current().nextInt(50));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        context.setUuid(context.getUuid() + "!" + context.getUuid());
         boolean b = Thread.currentThread().getId() == context.getT().getId();
         context.setName(context.getName() + " C.execute() ");
-        LOGGER.info("CCCCC : " + b + " " + JSON.toJSONString(context));
+        if(!context.getUuid().contains("!")){
+            return;
+        }
+        String[] split = context.getUuid().split("!");
+        String s = split[0];
+        for(String str : split){
+            if(StringUtils.isNotBlank(str) && !str.equals(s)){
+//                LOGGER.info("CCCCC : " + b + " " + JSON.toJSONString(context));
+                LOGGER.info(str);
+            }
+        }
+
     }
 
     @Override
