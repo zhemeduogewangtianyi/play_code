@@ -29,7 +29,9 @@ public class ThreadTimedWaiting05 {
 
 
                         Thread.sleep(50);
-                        o.wait(50);
+                        synchronized (o){
+                            o.wait(50);
+                        }
                         Thread.currentThread().join(50);
                         LockSupport.parkNanos(50);
                         LockSupport.parkUntil(50);
