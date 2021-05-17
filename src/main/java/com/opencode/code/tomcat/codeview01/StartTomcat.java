@@ -19,7 +19,7 @@ public class StartTomcat {
 
         //注册 Servlet
         Context ctx = tomcat.addContext("/", null);
-        Tomcat.addServlet(ctx,"helloServlet","com.opencode.code.tomcat.HelloWorldServlet");
+        Tomcat.addServlet(ctx,"helloServlet","com.opencode.code.tomcat.codeview01.HelloWorldServlet");
 
         //映射 Servlet
         ctx.addServletMappingDecoded("/hello","helloServlet");
