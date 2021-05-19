@@ -57,7 +57,7 @@ public class VectorBinarySearch {
     static boolean start = false;
 
     /** 难度级别。。。 */
-    private static int count = 3;
+    private static final int count = 3;
 
     public static void main(String[] args) {
 
@@ -88,7 +88,6 @@ public class VectorBinarySearch {
                 continue;
             }
             nextLine = nextLine.trim().toLowerCase();
-
 
             if(!start){
                 if(nextLine.equals("y")){
@@ -129,22 +128,31 @@ public class VectorBinarySearch {
                     }
                 }
 
-                start = false;
-                i = 0;
-                successIdx = 0;
-                failedIdx = 0;
-                failed = new String[count][3];
-                success = new String[count][3];
 
                 System.out.println();
                 System.out.println();
                 System.out.println();
 
-                for (int j = 0; j < count; j++) {
+                if(failedIdx > 0){
+                    for(int j = 0 ; j < failedIdx ; j++){
+                        source[j] = failed[j];
+                        System.out.println(source[j][1] + "    " + source[j][2]);
+                    }
+                }
+
+                for (int j = 0; j < count - failedIdx; j++) {
                     int random = (int) (Math.random() * datas.length);
                     source[j] = datas[random];
                     System.out.println(source[j][1] + "    " + source[j][2]);
                 }
+
+                start = false;
+                i = 0;
+                successIdx = 0;
+                failedIdx = 0;
+
+                failed = new String[count][3];
+                success = new String[count][3];
 
             }else{
                 if(start){
