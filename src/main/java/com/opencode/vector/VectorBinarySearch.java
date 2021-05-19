@@ -3,6 +3,11 @@ package com.opencode.vector;
 import java.io.*;
 import java.util.Scanner;
 
+/**
+ * 学英语。。。
+ * @author    WTY
+ * @date    2021/5/19 17:23
+ */
 public class VectorBinarySearch {
 
     private static String[][] datas = new String[10][3];
