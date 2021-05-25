@@ -8,6 +8,9 @@ import java.security.ProtectionDomain;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * mysql -h127.0.0.1 -P3306 -uroot -proot
+ * */
 public class DumpClassesService implements ClassFileTransformer {
 
     private static final List<String> SYSTEM_CLASS_PREFIX = Arrays.asList("java","sum","jdk");
