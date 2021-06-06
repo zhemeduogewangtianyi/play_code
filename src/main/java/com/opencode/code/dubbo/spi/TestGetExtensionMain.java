@@ -4,11 +4,12 @@ import com.opencode.code.dubbo.spi.interfaces.HelloWorldService;
 import org.apache.dubbo.common.extension.ExtensionLoader;
 
 /** Dubbo SPI */
-public class Main {
+public class TestGetExtensionMain {
 
     public static void main(String[] args) {
 
-        HelloWorldService helloWorldService = ExtensionLoader.getExtensionLoader(HelloWorldService.class).getDefaultExtension();
+        ExtensionLoader<HelloWorldService> extensionLoader = ExtensionLoader.getExtensionLoader(HelloWorldService.class);
+        HelloWorldService helloWorldService = extensionLoader.getDefaultExtension();
         helloWorldService.helloWorld();
 
     }

@@ -1,0 +1,4 @@
+# Comment 1
+impl1=com.opencode.code.dubbo.spi.impl.SimpleExtImpl1#Hello World
+impl2=com.opencode.code.dubbo.spi.impl.SimpleExtImpl2  # Comment 2
+impl3=com.opencode.code.dubbo.spi.impl.SimpleExtImpl3 # with head space
