@@ -11,6 +11,10 @@ public class TestProxy implements InitializingBean {
     @Autowired
     private UserService userService;
 
+    static class TestInner{
+        private String name;
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
         System.out.println(userService.query(1L));
