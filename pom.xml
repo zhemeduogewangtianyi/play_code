@@ -267,6 +267,30 @@
             </exclusions>
         </dependency>
 
+        <!-- lucene-core -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+        </dependency>
+
+        <!-- lucene-analyzers-common -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+        </dependency>
+
+        <!-- lucene-highlighter -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-highlighter</artifactId>
+        </dependency>
+
+        <!-- lucene-memory -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-memory</artifactId>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -424,6 +448,37 @@
                 <version>${dubbo.version}</version>
                 <type>pom</type>
             </dependency>
+
+            <!-- lucene-core -->
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-core</artifactId>
+                <version>8.6.2</version>
+            </dependency>
+
+            <!-- lucene-analyzers-common -->
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-analyzers-common</artifactId>
+                <version>8.6.2</version>
+            </dependency>
+
+            <!-- lucene-highlighter -->
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-highlighter</artifactId>
+                <version>8.6.2</version>
+            </dependency>
+
+            <!-- lucene-memory -->
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-memory</artifactId>
+                <version>8.6.2</version>
+            </dependency>
+
+
+
 
         </dependencies>
 
