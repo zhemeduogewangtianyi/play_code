@@ -1,17 +1,14 @@
-package com.opencode.carrot.csql.test;
+package com.opencode.carrot.csearch.test;
 
-import com.opencode.carrot.csql.entity.User;
+import com.opencode.carrot.csearch.entity.User;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.IOUtils;
-import org.apache.lucene.util.NumericUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,8 +47,8 @@ import java.util.List;
  * */
 public class TestCreateIndex {
 
-//    private static final String path = "/Users/wty/Downloads/temp";
-    private static final String path = "D:\\del";
+    private static final String path = "/Users/wty/Downloads/temp";
+//    private static final String path = "D:\\del";
 
 
     public static void main(String[] args) throws IOException, ParseException {
