@@ -1,0 +1,5 @@
+int=com.opencode.carrot.csearch.handle.add.IntPointHandle
+long=com.opencode.carrot.csearch.handle.add.LongPointHandle
+string=com.opencode.carrot.csearch.handle.add.StringFieldHandle
+text=com.opencode.carrot.csearch.handle.add.TextFieldHandle
+store=com.opencode.carrot.csearch.handle.add.StoreFieldHandle
