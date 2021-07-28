@@ -5,17 +5,31 @@ import com.opencode.carrot.csearch.config.CSearchConfig;
 import com.opencode.carrot.csearch.context.CFieldContext;
 import com.opencode.carrot.csearch.entity.User;
 import com.opencode.carrot.csearch.enums.CFieldTypeEnum;
+import com.opencode.carrot.csearch.interfaces.CFieldHandle;
+import org.apache.dubbo.common.extension.ExtensionLoader;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.Date;
+import java.util.*;
 
 public class CreateDoc {
+
+    private static final List<CFieldHandle> C_FIELD_HANDLES = new ArrayList<>();
+
+    private static final String[] names = {"int","long","string","text","store"};
+
+    static{
+        ExtensionLoader<CFieldHandle> extensionLoader = ExtensionLoader.getExtensionLoader(CFieldHandle.class);
+        for(String name : names){
+            C_FIELD_HANDLES.add(extensionLoader.getExtension(name));
+        }
+    }
 
     public static void main(String[] args) {
 
@@ -52,35 +66,36 @@ public class CreateDoc {
 
                 CField annotation = objField.getAnnotation(CField.class);
                 if(annotation != null){
-                    CFieldTypeEnum enums = annotation.enums();
-
-                    boolean store = annotation.store();
-                    boolean analyzer = annotation.analyzer();
-                    boolean date = annotation.isDate();
-
-                    String dateFormat = annotation.dateFormat();
-
-                    System.out.println(store + " : " + analyzer + " : " + date + " : " + dateFormat);
-
 
                     Class<?> type = objField.getType();
                     String name = objField.getName();
                     objField.setAccessible(true);
                     Object o = objField.get(obj);
 
-                    CFieldContext context = new CFieldContext(doc);
-                    context.setField(objField);
-                    context.setCField(annotation);
-                    context.setO(obj);
+                    C_FIELD_HANDLES.forEach(extendsion -> {
 
-//                    Class<?>[] parameter = {String.class,long[].class};
-//                    Object[] args = {name,new long[]{Long.parseLong(o.toString())}};
-//                    IndexableField clsField = enums.getClsField(parameter,args);
+                        CFieldContext context = new CFieldContext(doc);
+                        context.setField(objField);
+                        context.setCField(annotation);
+                        context.setO(o);
+                        context.setName(name);
+                        context.setType(type);
 
-                    System.out.println(type + " : " + name + " : " + o);
+                        if(extendsion.support(context)){
+                            Object handle = extendsion.handle(context);
+                            if(handle != null){
+                                IndexableField res = (IndexableField) handle;
+                                doc.add(res);
+                            }
+                        }
 
+                    });
                 }
             }
+
+            iWriter.addDocument(doc);
+
+            iWriter.close();
 
         } catch (Exception e) {
             e.printStackTrace();

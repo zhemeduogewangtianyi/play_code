@@ -11,6 +11,12 @@ import java.lang.reflect.Field;
 public class CFieldContext {
 
     @Setter
+    private String name;
+
+    @Setter
+    private Class<?> type;
+
+    @Setter
     private CField cField;
 
     private Field field;

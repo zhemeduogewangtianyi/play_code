@@ -26,7 +26,8 @@ public class CSearchConfig {
 
     public static CSearchConfig getConfig(){
         CSearchConfig cSearchConfig = new CSearchConfig();
-        cSearchConfig.setPath("/Users/wty/Downloads/temp");
+//        cSearchConfig.setPath("/Users/wty/Downloads/temp");
+        cSearchConfig.setPath("d://temp");
         cSearchConfig.setAnalyzer(new StandardAnalyzer());
         return cSearchConfig;
     }

@@ -9,6 +9,7 @@ public enum CFieldTypeEnum {
     LONG_POINT("存储 long 类型" ,LongPoint.class),
     TEXT_FIELD("存储 string 类型，分词" ,TextField.class),
     STRING_FIELD("存储 string 类型，不分词" ,StringField.class),
+    STORED_FIELD("存储类型" ,StoredField.class),
     ;
 
     private String desc;
