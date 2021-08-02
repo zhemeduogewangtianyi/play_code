@@ -128,10 +128,10 @@
         </dependency>
 
         <!-- spring data jpa -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.data</groupId>-->
-<!--            <artifactId>spring-data-jpa</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.data</groupId>-->
+        <!--            <artifactId>spring-data-jpa</artifactId>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -302,6 +302,18 @@
             <artifactId>unirest-java</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/javazoom/jlayer -->
+        <dependency>
+            <groupId>javazoom</groupId>
+            <artifactId>jlayer</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.dfki.mary</groupId>
+            <artifactId>voice-cmu-slt-hsmm</artifactId>
+            <version>5.2</version>
+        </dependency>
 
 
     </dependencies>
@@ -426,12 +438,12 @@
                 <version>${jsch.version}</version>
             </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-<!--        <dependency>-->
-<!--            <groupId>org.jsoup</groupId>-->
-<!--            <artifactId>jsoup</artifactId>-->
-<!--            <version>1.13.1</version>-->
-<!--        </dependency>-->
+            <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+            <!--        <dependency>-->
+            <!--            <groupId>org.jsoup</groupId>-->
+            <!--            <artifactId>jsoup</artifactId>-->
+            <!--            <version>1.13.1</version>-->
+            <!--        </dependency>-->
 
             <!-- unirest -->
             <dependency>
@@ -520,8 +532,6 @@
                 <artifactId>lucene-memory</artifactId>
                 <version>8.6.2</version>
             </dependency>
-
-
 
 
         </dependencies>
