@@ -11,9 +11,8 @@ public class DingPipe {
     public void start(){
         String qrCodeAuth = loginInterface.getQrCodeAuth();
         loginInterface.openQrCode(qrCodeAuth);
-        String paramToken = loginInterface.getParamToken();
-        CheckLoginAgent checkLoginAgent = new CheckLoginAgent(loginInterface, qrCodeAuth, paramToken);
-        new Thread(checkLoginAgent).start();
+        CheckLoginAgent checkLoginAgent = new CheckLoginAgent(loginInterface, qrCodeAuth);
+        checkLoginAgent.checkLogin(new Thread(checkLoginAgent));
     }
 
 }

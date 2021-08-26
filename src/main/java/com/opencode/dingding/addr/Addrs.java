@@ -14,4 +14,6 @@ public class Addrs {
 
     public static final String SET_COOKIE = "https://webalfa-cm3.dingtalk.com/setCookie";
 
+    public static final String LONG = "wss://webalfa-cm10.dingtalk.com/long";
+
 }

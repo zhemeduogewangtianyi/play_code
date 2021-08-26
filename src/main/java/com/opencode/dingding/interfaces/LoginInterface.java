@@ -1,8 +1,8 @@
 package com.opencode.dingding.interfaces;
 
-import com.opencode.dingding.entity.CheckLoginMessage;
-import com.opencode.dingding.entity.CheckWebLoginResult;
-import com.opencode.dingding.entity.SetCookieResult;
+import com.opencode.dingding.entity.ding.CheckLoginMessage;
+import com.opencode.dingding.entity.response.http.CheckWebLoginResult;
+import com.opencode.dingding.entity.response.http.SetCookieResult;
 
 public interface LoginInterface {
 

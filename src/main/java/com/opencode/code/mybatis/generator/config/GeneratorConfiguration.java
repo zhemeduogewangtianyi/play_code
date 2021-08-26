@@ -82,7 +82,7 @@ public class GeneratorConfiguration {
         javaModelGeneratorConfiguration.addProperty("immutable","false");
         javaModelGeneratorConfiguration.addProperty("enableSubPackages","false");
         javaModelGeneratorConfiguration.addProperty("trimStrings","true");
-        javaModelGeneratorConfiguration.addProperty("constructorBased","true");
+        javaModelGeneratorConfiguration.addProperty("constructorBased","false");
         context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
 
 
