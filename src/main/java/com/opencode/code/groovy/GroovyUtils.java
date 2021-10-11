@@ -3,15 +3,27 @@ package com.opencode.code.groovy;
 
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
+import org.apache.commons.codec.digest.DigestUtils;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * groovy runtime
  * */
 public class GroovyUtils {
 
+    private static final Map<String, GroovyObject> SCRIPT_MAP = new ConcurrentHashMap<>();
+
     public static Object evalScript(String script,String methodName,Object[] args) throws IllegalAccessException, InstantiationException {
-        Class cls = new GroovyClassLoader().parseClass(script);
-        GroovyObject gObj = (GroovyObject)cls.newInstance();
+        String cacheKey = DigestUtils.md5Hex(script);
+        GroovyObject gObj;
+        if(SCRIPT_MAP.containsKey(cacheKey)){
+            gObj = SCRIPT_MAP.get(cacheKey);
+        }else{
+            Class<?> cls = new GroovyClassLoader().parseClass(script);
+            gObj = (GroovyObject)cls.newInstance();
+        }
         return gObj.invokeMethod(methodName, args);
     }
 

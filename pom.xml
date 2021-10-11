@@ -323,11 +323,11 @@
             <version>1.0.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>de.dfki.mary</groupId>
-            <artifactId>voice-cmu-slt-hsmm</artifactId>
-            <version>5.2</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>de.dfki.mary</groupId>-->
+<!--            <artifactId>voice-cmu-slt-hsmm</artifactId>-->
+<!--            <version>5.2</version>-->
+<!--        </dependency>-->
 
         <!-- web-socket -->
         <dependency>
@@ -341,6 +341,22 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.11</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.alibaba/easyexcel -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>2.2.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
         </dependency>
 
 
@@ -503,11 +519,11 @@
                 <version>1.13.1</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.hynnet</groupId>
-                <artifactId>jacob</artifactId>
-                <version>1.18</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.hynnet</groupId>-->
+<!--                <artifactId>jacob</artifactId>-->
+<!--                <version>1.18</version>-->
+<!--            </dependency>-->
 
             <!-- apache 连接池 -->
             <dependency>
@@ -562,6 +578,18 @@
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-memory</artifactId>
                 <version>8.6.2</version>
+            </dependency>
+
+            <!-- validator -->
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>2.0.1.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>6.0.16.Final</version>
             </dependency>
 
         </dependencies>
