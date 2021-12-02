@@ -10,7 +10,7 @@ public class MqClient {
 
     public static void main(String[] args) throws IOException {
 
-        Socket socket = new Socket("127.0.0.1",8888);
+        Socket socket = new Socket("127.0.0.1",8866);
         PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
         pw.println("111111");
         BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));

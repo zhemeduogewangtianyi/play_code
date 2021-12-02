@@ -17,7 +17,7 @@ public class MqServer {
 
     public static void main(String[] args) throws IOException {
 
-        ServerSocket ss = new ServerSocket(8888);
+        ServerSocket ss = new ServerSocket(8866);
         while(true){
             Socket socket = ss.accept();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));

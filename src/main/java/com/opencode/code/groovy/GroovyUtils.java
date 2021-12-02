@@ -41,9 +41,14 @@ public class GroovyUtils {
                 "    }\n" +
                 "\n" +
                 "}";
-        Object[] arg = {"dddxhh","18"};
-        Object solution = GroovyUtils.evalScript(script, "solution", arg);
-        System.out.println(solution);
+//        Object[] arg = {"dddxhh","18"};
+//        Object solution = GroovyUtils.evalScript(script, "solution", arg);
+//        System.out.println(solution);
+
+        String cacheKey = DigestUtils.md5Hex("script");
+        String cacheKey1 = DigestUtils.md5Hex("script1");
+        System.out.println(cacheKey.equals(cacheKey1));
+
 
     }
 

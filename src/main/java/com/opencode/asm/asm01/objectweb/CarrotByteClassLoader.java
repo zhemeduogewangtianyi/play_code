@@ -1,4 +1,4 @@
-package com.opencode.asm.asm01.classloader;
+package com.opencode.asm.asm01.objectweb;
 
 public class CarrotByteClassLoader extends ClassLoader{
 
