@@ -4,6 +4,10 @@ import lombok.Data;
 
 import java.util.*;
 
+/**
+ * Comparison method violates its general contract!
+ * @date 2022/4/21 4:14 下午
+ */
 public class FindSortError {
 
     @Data
@@ -60,23 +64,15 @@ public class FindSortError {
                     // 比较匹配度
                     return o2.getScore().compareTo(o1.getScore());
                 } else {
-//                    // 比较日期
-//                    Date d1 = instockMap.getOrDefault(o1.getCarId(), null);
-//                    Date d2 = instockMap.getOrDefault(o2.getCarId(), null);
-//                    if (d1 != null && d2 != null) {
-//                        return d2.compareTo(d1);
-//                    }
-
-                    if(!instockMap.containsKey(o1.getCarId())) {
-                        return 1;
+                    // 比较日期
+                    Date d1 = instockMap.getOrDefault(o1.getCarId(), null);
+                    Date d2 = instockMap.getOrDefault(o2.getCarId(), null);
+                    if (d1 != null && d2 != null) {
+                        return d2.compareTo(d1);
                     }
-                    if(!instockMap.containsKey(o2.getCarId())) {
-                        return -1;
-                    }
-                    return (int) ( instockMap.get(o1.getCarId()).getTime() - instockMap.get(o2.getCarId()).getTime());
 
                 }
-//            return 0;
+            return 0;
             }
         });
 
