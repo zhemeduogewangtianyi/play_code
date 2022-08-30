@@ -16,9 +16,9 @@ public class Main {
     public static void main(String[] args) {
 
         Map<String, String> map = new HashMap<String,String>() {{
-            put("car_heights_configuration_icon","CarHeightsConfigurationIcon");
-//            put("alarm_threshold_settings_group","AlarmThresholdSettingsGroup");
-//            put("alarm_threshold_settings_item","AlarmThresholdSettingsItem");
+            put("role_publish_record_list","RolePublishRecordList");
+            put("role_publish_record_detail","RolePublishRecordDetail");
+            put("role_publish_record_error","RolePublishRecordError");
 //            put("alarm_threshold_settings_detail","AlarmThresholdSettingsDetail");
 //            put("alarm_threshold_settings_values","AlarmThresholdSettingsValues");
         }};

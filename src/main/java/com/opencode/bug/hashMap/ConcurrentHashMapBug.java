@@ -16,7 +16,6 @@ public class ConcurrentHashMapBug {
                 return map.computeIfAbsent("BB", key2 -> 42);
             }
         });
-
         System.out.println("Aa".hashCode());//2112
         System.out.println("BB".hashCode());//2112
 
