@@ -253,6 +253,13 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.4.12</version>
+        </dependency>
+
+
         <!-- 验证对象结构 -->
         <dependency>
             <groupId>org.openjdk.jol</groupId>

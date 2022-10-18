@@ -9,8 +9,8 @@ public class TryCatchFinallyReturn {
         int test = test();
         System.out.println(test);
 
-        FullyQualifiedJavaType fullyQualifiedJavaType = new FullyQualifiedJavaType(Object.class.getName());
-        System.out.println(fullyQualifiedJavaType);
+//        FullyQualifiedJavaType fullyQualifiedJavaType = new FullyQualifiedJavaType(Object.class.getName());
+//        System.out.println(fullyQualifiedJavaType);
 
     }
 
