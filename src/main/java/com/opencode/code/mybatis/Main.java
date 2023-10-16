@@ -16,11 +16,8 @@ public class Main {
     public static void main(String[] args) {
 
         Map<String, String> map = new HashMap<String,String>() {{
-            put("role_publish_record_list","RolePublishRecordList");
-            put("role_publish_record_detail","RolePublishRecordDetail");
-            put("role_publish_record_error","RolePublishRecordError");
-//            put("alarm_threshold_settings_detail","AlarmThresholdSettingsDetail");
-//            put("alarm_threshold_settings_values","AlarmThresholdSettingsValues");
+            put("open_car_offer_record","OpenCarOfferRecord");
+            put("open_car_offer_user_car","OpenCarOfferUserCar");
         }};
         for(Iterator<Map.Entry<String,String>> car = map.entrySet().iterator() ; car.hasNext() ; ){
             Map.Entry<String, String> next = car.next();
